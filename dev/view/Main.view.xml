@@ -47,7 +47,9 @@
 								</form:FormElement>
 								<form:FormElement id="compareAgainstDefLangFormElem"
 									label="{i18n>compareAgainstDefaultFile}">
-									<Switch state="{viewModel>/compareAgainstDefault}" />
+									<Switch state="{viewModel>/compareAgainstDefault}"
+										customTextOn="{i18n>yes}"
+										customTextOff="{i18n>no}"/>
 								</form:FormElement>
 								<form:FormElement id="bspNameFormElem"
 									label="{i18n>bspNameInput}">

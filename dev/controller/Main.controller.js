@@ -37,6 +37,7 @@ export default class MainController extends BaseController {
                 },
                 this
             );
+        this.getOwnerComponent().getRouter().getRoute("Main").attachPatternMatched(this._onRouteMatched, this);
     }
 
     onChange(oEvent) {
@@ -76,34 +77,12 @@ export default class MainController extends BaseController {
                     .map(oToken => encodeURIComponent(oToken.getKey()))
                     .join(",")
             });
+    }
 
-        // this._oPage.setBusy(true);
-        // if (!this._validateFields()) {
-        //     this._oPage.setBusy(false);
-        //     return;
-        // }
-        // const oCheckService = new CheckI18nService();
-        // const mParams = {
-        //     defaultLanguage: this._oViewModel.getProperty("/defaultLanguage"),
-        //     compareAgainstDefaultFile: this._oViewModel.getProperty("/compareAgainstDefault"),
-        //     bspNames: this._oBspNameFilterInput.getTokens().map(oToken => oToken.getKey()),
-        //     targetLanguages: this._oTargetLanguagesInput.getTokens().map(oToken => oToken.getKey())
-        // };
-        // try {
-        //     const oCheckResults = await oCheckService.checkTranslations(mParams);
-        //     this._oPage.setBusy(false);
-        //     this.getOwnerComponent()
-        //         .getRouter()
-        //         ?.navTo("CheckResults", {
-        //             [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]: mParams.defaultLanguage,
-        //             [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]: mParams.compareAgainstDefaultFile,
-        //             [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: mParams,
-        //             [constants.navParams.checkResultsPage.BSP_NAME]: encodeURIComponent("/DUI/*")
-        //         });
-        // } catch (oError) {
-        //     this._oPage.setBusy(false);
-        //     Log.error(oError);
-        // }
+    _onRouteMatched() {
+        setTimeout(() => {
+            this.getOwnerComponent().getModel("checkResults").setData();
+        }, 150);
     }
 
     _addTokensToMultiInput(oInput, sValue) {

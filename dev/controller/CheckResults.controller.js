@@ -34,13 +34,36 @@ export default class CheckResultsController extends BaseController {
             bspNames: oUrlParams[constants.navParams.checkResultsPage.BSP_NAME],
             targetLanguages: oUrlParams[constants.navParams.checkResultsPage.TARGET_LANGUAGE]
         };
+
+        let aCheckResults = [];
+        let iWithErrorsCount = 0;
+        let iWithoutErrorsCount = 0;
         try {
             const oCheckService = new CheckI18nService();
-            const oCheckResult = await oCheckService.checkTranslations(mParams);
-            console.log(oCheckResult);
+            const { data: sCheckResult } = await oCheckService.checkTranslations(mParams);
+            aCheckResults = JSON.parse(sCheckResult);
+            for (const oCheckResult of aCheckResults) {
+                switch (oCheckResult.status) {
+                    case "S":
+                    case "W":
+                        iWithoutErrorsCount++;
+                        break;
+                    case "E":
+                        iWithErrorsCount++;
+                        break;
+                    default:
+                        break;
+                }
+            }
         } catch (oError) {
             Log.error(oError);
         }
+        this.getOwnerComponent().getModel("checkResults").setData({
+            results: aCheckResults,
+            count: aCheckResults.length,
+            withoutErrorsCount: iWithoutErrorsCount,
+            withErrorsCount: iWithErrorsCount
+        });
         this._oViewModel.setProperty("/busy", false);
     }
 
