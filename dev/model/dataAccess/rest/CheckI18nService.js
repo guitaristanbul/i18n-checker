@@ -11,12 +11,15 @@ export default class CheckI18nService {
      * @param {string} mParams.defaultLangauge default language as base line for comparison
      * @param {boolean} mParams.compareAgainstDefaultFile
      *   if <code>true</code> the default file will be used for comparison
-     * @param {string[]} mParams.targetLanguages array of target languages
-     * @param {string[]} mParams.bspNames array of BSP name filters
+     * @param {string} mParams.targetLanguages comma separated list of target languages
+     * @param {string} mParams.bspNames comma separated list oof BSP name filters
      * @returns {Promise<Object>} promise of service response
      */
-    async retrieveCheckResults() {
-        // TODO: fill url paramaters
-        ajax.send("/sap/bc/zi18nchk_ignr/checkResults");
+    async checkTranslations(mParams) {
+        let sUrlParams = `?defLang=${mParams.defaultLanguage}`;
+        sUrlParams += `&compAgainstDef=${mParams.compareAgainstDefaultFile}`;
+        sUrlParams += `&trgtLang=${mParams.targetLanguages}`;
+        sUrlParams += `&bspName=${mParams.bspNames}`;
+        return ajax.send(`/sap/bc/zi18nchksrv/checkResults${sUrlParams}`);
     }
 }

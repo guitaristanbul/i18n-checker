@@ -1,8 +1,8 @@
 import BaseController from "./BaseController";
 import models from "devepos/i18ncheck/model/models";
-import CheckI18nService from "devepos/i18ncheck/model/dataAccess/rest/CheckI18nService";
 import Token from "sap/m/Token";
 import ValueState from "sap/ui/core/ValueState";
+import constants from "devepos/i18ncheck/model/constants";
 
 /**
  * Main View Controller
@@ -23,39 +23,90 @@ export default class MainController extends BaseController {
             defaultLanguage: "en"
         });
         this.getView().setModel(this._oViewModel, "viewModel");
+
+        this._oTargetLanguagesInput = this.getView().byId("trgtLanguagesInput");
+        this._oBspNameFilterInput = this.getView().byId("bspNameFilter");
+        this.getView()
+            .byId("paramsPanel")
+            .attachBrowserEvent(
+                "keyup",
+                oEvent => {
+                    if (oEvent.key === "Enter" && oEvent.ctrlKey && !oEvent.metaKey && !oEvent.shiftKey) {
+                        this.onExecuteCheck();
+                    }
+                },
+                this
+            );
     }
 
     onChange(oEvent) {
         const oInput = oEvent.getSource();
+        if (oInput.isA("sap.m.MultiInput")) {
+            this._addTokensToMultiInput(oInput, oEvent?.getParameter("value"));
+        }
         if (oInput?.getRequired()) {
             this._checkRequired(oInput);
         }
     }
 
-    onMultiSubmit(oEvent) {
-        this._addTargetLanguage(oEvent.getSource(), oEvent.getParameter("value"));
+    onSubmit(oEvent) {
+        const oInput = oEvent.getSource();
+        if (oInput.isA("sap.m.MultiInput")) {
+            this._addTokensToMultiInput(oInput, oEvent.getParameter("value"));
+        }
     }
 
-    onMultiChange(oEvent) {
-        this._addTargetLanguage(oEvent?.getSource(), oEvent?.getParameter("value"));
-        this.onChange(oEvent);
-    }
-
-    onExecuteCheck(oEvent) {
-        this._oPage.setBusy(true);
+    onExecuteCheck() {
         if (!this._validateFields()) {
-            this._oPage.setBusy(false);
             return;
         }
-        setTimeout(() => {
-            this._oPage.setBusy(false);
-            this.getOwnerComponent()
-                .getRouter()
-                ?.navTo("CheckResults", { defLang: "en", trgtLang: "en", bspName: encodeURIComponent("/DUI/*") });
-        }, 2000);
+        this.getOwnerComponent()
+            .getRouter()
+            ?.navTo("CheckResults", {
+                [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]:
+                    this._oViewModel.getProperty("/defaultLanguage"),
+                [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]:
+                    this._oViewModel.getProperty("/compareAgainstDefault"),
+                [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: this._oTargetLanguagesInput
+                    .getTokens()
+                    .map(oToken => oToken.getKey())
+                    .join(","),
+                [constants.navParams.checkResultsPage.BSP_NAME]: this._oBspNameFilterInput
+                    .getTokens()
+                    .map(oToken => encodeURIComponent(oToken.getKey()))
+                    .join(",")
+            });
+
+        // this._oPage.setBusy(true);
+        // if (!this._validateFields()) {
+        //     this._oPage.setBusy(false);
+        //     return;
+        // }
+        // const oCheckService = new CheckI18nService();
+        // const mParams = {
+        //     defaultLanguage: this._oViewModel.getProperty("/defaultLanguage"),
+        //     compareAgainstDefaultFile: this._oViewModel.getProperty("/compareAgainstDefault"),
+        //     bspNames: this._oBspNameFilterInput.getTokens().map(oToken => oToken.getKey()),
+        //     targetLanguages: this._oTargetLanguagesInput.getTokens().map(oToken => oToken.getKey())
+        // };
+        // try {
+        //     const oCheckResults = await oCheckService.checkTranslations(mParams);
+        //     this._oPage.setBusy(false);
+        //     this.getOwnerComponent()
+        //         .getRouter()
+        //         ?.navTo("CheckResults", {
+        //             [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]: mParams.defaultLanguage,
+        //             [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]: mParams.compareAgainstDefaultFile,
+        //             [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: mParams,
+        //             [constants.navParams.checkResultsPage.BSP_NAME]: encodeURIComponent("/DUI/*")
+        //         });
+        // } catch (oError) {
+        //     this._oPage.setBusy(false);
+        //     Log.error(oError);
+        // }
     }
 
-    _addTargetLanguage(oInput, sValue) {
+    _addTokensToMultiInput(oInput, sValue) {
         if (!oInput || !oInput?.isA("sap.m.MultiInput") || !sValue) {
             return;
         }
@@ -73,11 +124,28 @@ export default class MainController extends BaseController {
     }
 
     _checkRequired(oInputCtrl) {
+        let bSetValueState = false;
+        let sValueState = "";
+
         if (oInputCtrl.isA("sap.m.MultiInput")) {
             const aTokens = oInputCtrl.getTokens();
-            oInputCtrl.setValueState(!aTokens || aTokens.length <= 0 ? ValueState.Error : ValueState.None);
+            bSetValueState = true;
+            sValueState = !aTokens || aTokens.length <= 0 ? ValueState.Error : ValueState.None;
+            oInputCtrl.setValueState();
         } else if (oInputCtrl.isA("sap.m.Input")) {
-            oInputCtrl.setValueState(!oInputCtrl.getValue() ? ValueState.Error : ValueState.None);
+            bSetValueState = true;
+            sValueState = !oInputCtrl.getValue() ? ValueState.Error : ValueState.None;
+        }
+
+        if (bSetValueState) {
+            oInputCtrl.setValueState(sValueState);
+            if (sValueState === ValueState.Error) {
+                oInputCtrl.setValueStateText(
+                    this.getOwnerComponent().getResourceBundle().getText("mandatoryFieldNotFilled")
+                );
+            } else {
+                oInputCtrl.setValueStateText("");
+            }
         }
     }
 
@@ -89,7 +157,9 @@ export default class MainController extends BaseController {
             }
             this._checkRequired(oRequiredCtrl);
             if (oRequiredCtrl?.getRequired() && oRequiredCtrl?.getValueState() === ValueState.Error) {
-                oRequiredCtrl.focus();
+                setTimeout(() => {
+                    oRequiredCtrl.focus();
+                }, 100);
                 return false;
             }
         }

@@ -91,7 +91,7 @@
                 },
                 {
                     "name": "CheckResults",
-                    "pattern": "/checkResults?defaultLang={defLang}&trgtLang={trgtLang}&bspName={bspName}",
+                    "pattern": "/checkResults?defaultLang={defLang}&compAgainstDef={compAgainstDef}&trgtLang={trgtLang}&bspName={bspName}",
                     "target": ["CheckResults"]
                 }
             ],

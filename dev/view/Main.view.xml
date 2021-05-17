@@ -40,6 +40,7 @@
 										required="true"
 										fieldGroupIds="requiredParam"
 										change="onChange"
+										submit="onSubmit"
 										tooltip="{i18n>defaultLanguageInputTooltip}"
 										value="{viewModel>/defaultLanguage}"
 										width="10rem"/>
@@ -52,19 +53,21 @@
 									label="{i18n>bspNameInput}">
 									<MultiInput id="bspNameFilter"
 										fieldGroupIds="requiredParam"
-										change="onMultiChange"
-										submit="onMultiSubmit"
+										change="onChange"
+										submit="onSubmit"
 										required="true"
 										maxLength="15"
-										custom:upperCase="true"/>
+										custom:upperCase="true"
+										showValueHelp="false"/>
 								</form:FormElement>
 								<form:FormElement id="trgtLanguagesFormElem"
 									label="{i18n>targetLanguagesInput}">
 									<MultiInput id="trgtLanguagesInput"
 										required="true"
 										fieldGroupIds="requiredParam"
-										submit="onMultiSubmit"
-										change="onMultiChange"/>
+										submit="onSubmit"
+										change="onChange"
+										showValueHelp="false"/>
 								</form:FormElement>
 							</form:formElements>
 						</form:FormContainer>

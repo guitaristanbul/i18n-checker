@@ -4,7 +4,7 @@
 	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m">
-	<semantic:FullscreenPage id="resultsPage" navButtonPress="onNavigate">
+	<semantic:FullscreenPage id="resultsPage" navButtonPress="onNavigate" busy="{viewModel>/busy}">
 		<semantic:content>
 			<Panel id="panel">
 			</Panel>
