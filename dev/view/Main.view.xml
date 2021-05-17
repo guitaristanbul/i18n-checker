@@ -1,0 +1,83 @@
+<mvc:View controllerName="devepos.i18ncheck.controller.Main"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns="sap.m">
+
+	<semantic:FullscreenPage id="page">
+		<semantic:content>
+			<Panel id="paramsPanel">
+				<form:Form id="paramsForm"
+					editable="true">
+					<form:title>
+						<core:Title id="paramsFormTitle"
+							text="{i18n>executionParamsFormTitle}"/>
+					</form:title>
+					<form:layout>
+						<form:ResponsiveGridLayout id="expGridLayout"
+							labelSpanXL="4"
+							labelSpanL="4"
+							labelSpanM="12"
+							labelSpanS="12"
+							adjustLabelSpan="true"
+							emptySpanXL="0"
+							emptySpanL="0"
+							emptySpanM="0"
+							emptySpanS="0"
+							columnsXL="2"
+							columnsL="2"
+							columnsM="1"
+							singleContainerFullSize="false"/>
+					</form:layout>
+					<form:formContainers>
+						<form:FormContainer id="paramsFormContainer">
+							<form:formElements>
+								<form:FormElement id="defaultLanguageFormElem"
+									label="{i18n>defaultLanguageInput}">
+									<Input id="defaultLanguage"
+										required="true"
+										fieldGroupIds="requiredParam"
+										change="onChange"
+										tooltip="{i18n>defaultLanguageInputTooltip}"
+										value="{viewModel>/defaultLanguage}"
+										width="10rem"/>
+								</form:FormElement>
+								<form:FormElement id="compareAgainstDefLangFormElem"
+									label="{i18n>compareAgainstDefaultFile}">
+									<Switch state="{viewModel>/compareAgainstDefault}" />
+								</form:FormElement>
+								<form:FormElement id="bspNameFormElem"
+									label="{i18n>bspNameInput}">
+									<MultiInput id="bspNameFilter"
+										fieldGroupIds="requiredParam"
+										change="onMultiChange"
+										submit="onMultiSubmit"
+										required="true"
+										maxLength="15"
+										custom:upperCase="true"/>
+								</form:FormElement>
+								<form:FormElement id="trgtLanguagesFormElem"
+									label="{i18n>targetLanguagesInput}">
+									<MultiInput id="trgtLanguagesInput"
+										required="true"
+										fieldGroupIds="requiredParam"
+										submit="onMultiSubmit"
+										change="onMultiChange"/>
+								</form:FormElement>
+							</form:formElements>
+						</form:FormContainer>
+					</form:formContainers>
+				</form:Form>
+			</Panel>
+		</semantic:content>
+		<semantic:customFooterContent>
+			<Button enabled="true"
+				id="idBtnExport"
+				press="onExecuteCheck"
+				text="{i18n>executeChecksAction}"
+				icon="sap-icon://begin"/>
+		</semantic:customFooterContent>
+	</semantic:FullscreenPage>
+</mvc:View>

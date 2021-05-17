@@ -1,0 +1,11 @@
+coverage
+node_modules/
+dist/
+doc/
+webapp/
+src/
+reports/
+changes_preview.js
+.vscode/
+.idea/
+deploy.js
