@@ -3,6 +3,7 @@ import Log from "sap/base/Log";
 import CheckI18nService from "devepos/i18ncheck/model/dataAccess/rest/CheckI18nService";
 import constants from "devepos/i18ncheck/model/constants";
 import models from "devepos/i18ncheck/model/models";
+import Filter from "sap/ui/model/Filter";
 
 /**
  * CheckResults View Controller
@@ -69,5 +70,23 @@ export default class CheckResultsController extends BaseController {
 
     onNavigate(oEvent) {
         this.getOwnerComponent().getRouter()?.navTo("Main");
+    }
+
+    onFilterSelect(oEvent) {
+        const oBinding = this.byId("checkResults").getBinding("items");
+        const sKey = oEvent.getParameter("key");
+        // Array to combine filters
+        const aFilters = [];
+        let oStatusFilter;
+
+        if (sKey === "Ok") {
+            oStatusFilter = new Filter("status", "NE", "E");
+        } else if (sKey === "Error") {
+            oStatusFilter = new Filter("status", "EQ", "E");
+        }
+        if (oStatusFilter) {
+            aFilters.push(oStatusFilter);
+        }
+        oBinding.filter(aFilters);
     }
 }

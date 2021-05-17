@@ -10,7 +10,8 @@
 		<semantic:content>
 			<Panel id="panel">
 				<IconTabBar id="idIconTabBar"
-					select=".onFilterSelect"
+					select="onFilterSelect"
+					selectedKey="Error"
 					class="sapUiResponsiveContentPadding">
 					<items>
 						<IconTabFilter showAll="true"
