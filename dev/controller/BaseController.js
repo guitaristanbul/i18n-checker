@@ -17,4 +17,12 @@ export default class BaseController extends Controller {
     getRouter() {
         return this.getOwnerComponent().getRouter();
     }
+
+    /**
+     * Returns an instance of the semantic helper
+     * @returns {sap.f.FlexibleColumnLayoutSemanticHelper} An instance of the semantic helper
+     */
+    getFlexColHelper() {
+        return this.getOwnerComponent().getHelper();
+    }
 }

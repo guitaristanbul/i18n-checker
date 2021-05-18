@@ -1,5 +1,9 @@
-<mvc:View controllerName="devepos.i18ncheck.controller.App" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
-	<App id="app">
-		<pages></pages>
-	</App>
+<mvc:View controllerName="devepos.i18ncheck.controller.App"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.f"
+	height="100%">
+	<FlexibleColumnLayout id="flexColLayout"
+		stateChange="onStateChanged"
+		layout="{layout>/layout}"
+		backgroundDesign="Translucent"/>
 </mvc:View>

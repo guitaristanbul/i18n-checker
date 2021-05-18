@@ -1,0 +1,115 @@
+<mvc:View controllerName="devepos.i18ncheck.controller.Detail"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:semantic="sap.m.semantic"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns="sap.uxap">
+
+    <ObjectPageLayout id="ObjectPageLayout"
+        class="sapUiNoContentPadding"
+        showTitleInHeaderContent="true"
+        showAnchorBar="true"
+        showEditHeaderButton="true"
+        editHeaderButtonPress="handleEditBtnPress"
+        upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:HBox>
+                        <m:Title text="{= ${bspName} + ' - ' + ${description} }"
+                            wrapping="true"/>
+                    </m:HBox>
+                </expandedHeading>
+
+                <navigationActions>
+                    <m:OverflowToolbarButton type="Transparent"
+                        icon="sap-icon://full-screen"
+                        press="handleFullScreen"
+                        tooltip="Enter Full Screen Mode"
+                        visible="{= ${layout>/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent"
+                        icon="sap-icon://exit-full-screen"
+                        press="handleExitFullScreen"
+                        tooltip="Exit Full Screen Mode"
+                        visible="{= ${layout>/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                    <m:OverflowToolbarButton type="Transparent"
+                        icon="sap-icon://decline"
+                        press="handleClose"
+                        tooltip="Close column"
+                        visible="{= ${layout>/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+                </navigationActions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox wrap="Wrap">
+                <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                    <m:Label text="{= 'Checked file count: ' + ${checkedFiles}}" />
+                </layout:VerticalLayout>
+            </m:FlexBox>
+        </headerContent>
+
+        <sections>
+            <ObjectPageSection titleUppercase="false"
+                id="messagesSection"
+                title="Messages"
+                importance="Medium">
+
+                <subSections>
+                    <ObjectPageSubSection id="checkResultSubSection"
+                        titleUppercase="false">
+                        <m:Table id="checkResults"
+                            inset="false"
+                            items="{ 
+                                        path: 'i18nResults',
+                                        sorter: {
+                                            path: 'file/path'
+                                        }
+                                    }">
+                            <m:columns>
+                                <m:Column width="30em">
+                                    <m:Text text="{i18n>filePathCol}" />
+                                </m:Column>
+                                <m:Column width="10em">
+                                    <m:Text text="{i18n>fileNameCol}" />
+                                </m:Column>
+                                <m:Column width="20em">
+                                    <m:Text text="{i18n>messageTypeCol}" />
+                                </m:Column>
+                                <m:Column demandPopin="true"
+                                    minScreenWidth="1000px">
+                                    <m:Text text="{i18n>messageCol}" />
+                                </m:Column>
+                            </m:columns>
+                            <m:items>
+                                <m:ColumnListItem>
+                                    <m:cells>
+                                        <m:ObjectIdentifier title="{file/path}"/>
+                                        <m:Text text="{file/name}" />
+                                        <m:Text text="{
+                                            path: 'messageType',
+                                            formatter: '.formatter.getTextForKey'
+                                        }"/>
+                                        <m:Text text="{message}" />
+                                    </m:cells>
+                                </m:ColumnListItem>
+                            </m:items>
+                        </m:Table>
+                    </ObjectPageSubSection>
+
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+        <footer>
+            <m:OverflowToolbar>
+                <m:ToolbarSpacer />
+                <m:Button type="Accept"
+                    text="Accept"/>
+                <m:Button type="Reject"
+                    text="Reject"/>
+            </m:OverflowToolbar>
+        </footer>
+    </ObjectPageLayout>
+</mvc:View>

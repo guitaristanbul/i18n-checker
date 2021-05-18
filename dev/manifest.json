@@ -36,7 +36,7 @@
             "viewName": "devepos.i18ncheck.view.App",
             "type": "XML",
             "async": true,
-            "id": "App"
+            "id": "flexColLayout"
         },
         "dependencies": {
             "minUI5Version": "1.76.0",
@@ -75,55 +75,38 @@
         },
         "routing": {
             "config": {
-                "routerClass": "sap.m.routing.Router",
+                "routerClass": "sap.f.routing.Router",
                 "viewType": "XML",
-                "async": true,
                 "viewPath": "devepos.i18ncheck.view",
-                "controlAggregation": "pages",
-                "controlId": "app",
-                "clearControlAggregation": false
+                "controlId": "flexColLayout",
+                "async": true,
+                "transition": "slide"
             },
             "routes": [
                 {
-                    "name": "Main",
-                    "pattern": ":?sap-iapp-state:",
-                    "target": ["Main"]
+                    "name": "main",
+                    "pattern": ":layout:",
+                    "target": ["main", "detail"]
                 },
                 {
-                    "name": "CheckResults",
-                    "pattern": "/checkResults?defLang={defLang}&compAgainstDef={compAgainstDef}&trgtLang={trgtLang}&bspName={bspName}",
-                    "target": ["CheckResults"]
+                    "name": "detail",
+                    "pattern": "detail/{resultPath}/{layout}",
+                    "target": ["main", "detail"]
                 },
                 {
-                    "name": "CheckDetails",
-                    "pattern": "/checkDetails?path={path}",
-                    "target": ["CheckDetails"]
+                    "name": "detailDetail",
+                    "pattern": "detailDetail/{resultPath}/{detailPath}/{layout}",
+                    "target": ["main", "detail"]
                 }
             ],
             "targets": {
-                "Main": {
-                    "viewType": "XML",
-                    "transition": "slide",
-                    "clearControlAggregation": false,
-                    "viewId": "Main",
+                "main": {
                     "viewName": "Main",
-                    "viewLevel": 1
+                    "controlAggregation": "beginColumnPages"
                 },
-                "CheckResults": {
-                    "viewType": "XML",
-                    "transition": "slide",
-                    "clearControlAggregation": false,
-                    "viewId": "CheckResults",
-                    "viewName": "CheckResults",
-                    "viewLevel": 2
-                },
-                "CheckDetails": {
-                    "viewType": "XML",
-                    "transition": "slide",
-                    "clearControlAggregation": false,
-                    "viewId": "CheckDetails",
-                    "viewName": "CheckDetails",
-                    "viewLevel": 3
+                "detail": {
+                    "viewName": "Detail",
+                    "controlAggregation": "midColumnPages"
                 }
             }
         }

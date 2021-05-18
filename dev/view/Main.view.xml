@@ -1,42 +1,39 @@
-<mvc:View controllerName="devepos.i18ncheck.controller.Main"
-	xmlns:form="sap.ui.layout.form"
-	xmlns:semantic="sap.m.semantic"
-	xmlns:core="sap.ui.core"
+<mvc:View xmlns:core="sap.ui.core"
+	controllerName="devepos.i18ncheck.controller.Main"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:vm="sap.ui.comp.variants"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-	xmlns="sap.m">
-
-	<semantic:FullscreenPage id="page"
-		title="{i18n>appTitle}">
-		<semantic:content>
-			<Panel id="paramsPanel">
-				<form:Form id="paramsForm"
-					editable="true">
-					<form:title>
-						<core:Title id="paramsFormTitle"
-							text="{i18n>executionParamsFormTitle}"/>
-					</form:title>
-					<form:layout>
-						<form:ResponsiveGridLayout id="expGridLayout"
-							labelSpanXL="4"
-							labelSpanL="4"
-							labelSpanM="12"
-							labelSpanS="12"
-							adjustLabelSpan="true"
-							emptySpanXL="0"
-							emptySpanL="0"
-							emptySpanM="0"
-							emptySpanS="0"
-							columnsXL="2"
-							columnsL="2"
-							columnsM="1"
-							singleContainerFullSize="false"/>
-					</form:layout>
-					<form:formContainers>
-						<form:FormContainer id="paramsFormContainer">
-							<form:formElements>
-								<form:FormElement id="defaultLanguageFormElem"
-									label="{i18n>defaultLanguageInput}">
+	height="100%">
+	<f:DynamicPage id="dynamicPageId"
+		toggleHeaderOnTitleClick="false">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<vm:VariantManagement standardItemText="Standard">
+					</vm:VariantManagement>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!-- DynamicPage Header -->
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar id="filterbar"
+						reset="onReset"
+						persistencyKey="filterVariantPK"
+						search="onSearch"
+						useToolbar="false"
+						showGoOnFB="true">
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem name="defaultLangaugeFilter"
+								groupName="_BASIC"
+								visibleInFilterBar="true"
+								label="{i18n>defaultLanguageInput}">
+								<fb:control>
 									<Input id="defaultLanguage"
 										required="true"
 										fieldGroupIds="requiredParam"
@@ -45,15 +42,26 @@
 										tooltip="{i18n>defaultLanguageInputTooltip}"
 										value="{viewModel>/defaultLanguage}"
 										width="10rem"/>
-								</form:FormElement>
-								<form:FormElement id="compareAgainstDefLangFormElem"
-									label="{i18n>compareAgainstDefaultFile}">
-									<Switch state="{viewModel>/compareAgainstDefault}"
-										customTextOn="{i18n>yes}"
-										customTextOff="{i18n>no}"/>
-								</form:FormElement>
-								<form:FormElement id="bspNameFormElem"
-									label="{i18n>bspNameInput}">
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="compareAgainstDef"
+								groupName="_BASIC"
+								visibleInFilterBar="true"
+								label="{i18n>compareAgainstDefaultFile}">
+								<fb:control>
+									<Select selectedKey="{viewModel>/compareAgainstDefault}">
+										<core:Item key="true"
+											text="{i18n>yes}" />
+										<core:Item key="false"
+											text="{i18n>no}" />
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="bspNameFilter"
+								groupName="_BASIC"
+								visibleInFilterBar="true"
+								label="{i18n>bspNameInput}">
+								<fb:control>
 									<MultiInput id="bspNameFilter"
 										fieldGroupIds="requiredParam"
 										change="onChange"
@@ -62,28 +70,84 @@
 										maxLength="15"
 										custom:upperCase="true"
 										showValueHelp="false"/>
-								</form:FormElement>
-								<form:FormElement id="trgtLanguagesFormElem"
-									label="{i18n>targetLanguagesInput}">
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="trgtLanguageFilter"
+								groupName="_BASIC"
+								visibleInFilterBar="true"
+								label="{i18n>targetLanguagesInput}">
+								<fb:control>
 									<MultiInput id="trgtLanguagesInput"
 										required="true"
 										fieldGroupIds="requiredParam"
 										submit="onSubmit"
 										change="onChange"
 										showValueHelp="false"/>
-								</form:FormElement>
-							</form:formElements>
-						</form:FormContainer>
-					</form:formContainers>
-				</form:Form>
-			</Panel>
-		</semantic:content>
-		<semantic:customFooterContent>
-			<Button enabled="true"
-				id="idBtnExport"
-				press="onExecuteCheck"
-				text="{i18n>executeChecksAction}"
-				icon="sap-icon://begin"/>
-		</semantic:customFooterContent>
-	</semantic:FullscreenPage>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<!-- DynamicPage Content -->
+		<f:content>
+			<Table id="checkResults"
+				inset="false"
+				updateFinished="onUpdateFinished"
+				busy="{viewModel>/busy}"
+				busyIndicatorDelay="300"
+				class="sapFDynamicPageAlignContent"
+				showSeparators="Inner"
+				items="{
+							path: '/results',
+							sorter: {
+								path: 'bspName'
+							}
+						}">
+				<headerToolbar>
+					<OverflowToolbar>
+						<content>
+							<Title text="{viewModel>/resultsTableTitle}" />
+							<SegmentedButton selectedKey="{viewModel>/selectedFilter}"
+								selectionChange="onFilterChange">
+								<items>
+									<SegmentedButtonItem key="All"
+										text="{i18n>all}" />
+									<SegmentedButtonItem key="Error"
+										text="{i18n>withErrors}" />
+									<SegmentedButtonItem key="Ok"
+										text="{i18n>withoutErrors}" />
+								</items>
+							</SegmentedButton>
+						</content>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column width="15em">
+						<Text text="{i18n>bspAppCol}" />
+					</Column>
+					<Column width="10em">
+						<Text text="{i18n>repositoryTypeCol}" />
+					</Column>
+					<Column demandPopin="true"
+						minScreenWidth="500px">
+						<Text text="{i18n>descriptionCol}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation"
+						press="onResultsPress">
+						<cells>
+							<ObjectIdentifier title="{bspName}"/>
+							<Text text="{ path: 'isApp', formatter: '.formatter.getRepoTypeText'}" />
+							<Text text="{description}"
+								wrapping="false" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+
+		</f:content>
+	</f:DynamicPage>
 </mvc:View>

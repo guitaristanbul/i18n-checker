@@ -1,8 +1,11 @@
 import BaseController from "./BaseController";
 import models from "devepos/i18ncheck/model/models";
+import CheckI18nService from "devepos/i18ncheck/model/dataAccess/rest/CheckI18nService";
+import formatter from "devepos/i18ncheck/model/formatter";
 import Token from "sap/m/Token";
 import ValueState from "sap/ui/core/ValueState";
-import constants from "devepos/i18ncheck/model/constants";
+import Log from "sap/base/Log";
+import Filter from "sap/ui/model/Filter";
 
 /**
  * Main View Controller
@@ -12,33 +15,53 @@ import constants from "devepos/i18ncheck/model/constants";
  * @public
  */
 export default class MainController extends BaseController {
+    formatter = formatter;
     onInit() {
         BaseController.prototype.onInit.call(this);
         this._oPage = this.byId("page");
+        this._oBundle = this.getOwnerComponent().getResourceBundle();
+        this._oModel = this.getOwnerComponent().getModel();
         this._oViewModel = models.createViewModel({
             compareAgainstDefault: true,
-            defaultLanguage: "en"
+            defaultLanguage: "en",
+            selectedFilter: "Error",
+            resultsTableTitle: this._oBundle.getText("resultsTableTitle", [0])
         });
         this.getView().setModel(this._oViewModel, "viewModel");
-
+        this._oModel.setData({ count: 0, withoutErrorsCount: 0, withErrorsCount: 0 });
         this._oTargetLanguagesInput = this.getView().byId("trgtLanguagesInput");
         this._oBspNameFilterInput = this.getView().byId("bspNameFilter");
-        this.getView()
-            .byId("page")
-            .attachBrowserEvent(
-                "keyup",
-                oEvent => {
-                    if (oEvent.key === "F8" && !oEvent.ctrlKey && !oEvent.metaKey && !oEvent.shiftKey) {
-                        this.onExecuteCheck();
-                    }
-                },
-                this
-            );
-        this.getOwnerComponent().getRouter().getRoute("Main").attachPatternMatched(this._onRouteMatched, this);
+    }
+
+    onUpdateFinished() {
+        let iCount = 0;
+        switch (this._oViewModel.getProperty("/selectedFilter")) {
+            case "Error":
+                iCount = this._oModel.getProperty("/withErrorsCount");
+                break;
+            case "Ok":
+                iCount = this._oModel.getProperty("/withoutErrorsCount");
+                break;
+            case "All":
+                iCount = this._oModel.getProperty("/count");
+                break;
+            default:
+                break;
+        }
+        this._oViewModel.setProperty("/resultsTableTitle", this._oBundle.getText("resultsTableTitle", [iCount]));
+    }
+
+    onResultsPress(oEvent) {
+        const oNextUIState = this.getFlexColHelper().getNextUIState(1);
+        this.getRouter().navTo("detail", {
+            layout: oNextUIState.layout,
+            resultPath: encodeURIComponent(oEvent.getSource().getBindingContextPath())
+        });
     }
 
     onChange(oEvent) {
         const oInput = oEvent.getSource();
+        oInput.data("__changing", true);
         if (oInput.isA("sap.m.MultiInput")) {
             this._addTokensToMultiInput(oInput, oEvent?.getParameter("value"));
         }
@@ -51,36 +74,84 @@ export default class MainController extends BaseController {
         const oInput = oEvent.getSource();
         if (oInput.isA("sap.m.MultiInput")) {
             this._addTokensToMultiInput(oInput, oEvent.getParameter("value"));
+            if (oInput.data("__changing")) {
+                oInput.data("__changing", false);
+                return;
+            }
         }
+        this.onSearch();
     }
 
-    onExecuteCheck() {
+    async onSearch() {
         if (!this._validateFields()) {
             return;
         }
-        this.getOwnerComponent().getModel().setData();
-        this.getOwnerComponent()
-            .getRouter()
-            ?.navTo("CheckResults", {
-                [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]:
-                    this._oViewModel.getProperty("/defaultLanguage"),
-                [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]:
-                    this._oViewModel.getProperty("/compareAgainstDefault"),
-                [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: this._oTargetLanguagesInput
-                    .getTokens()
-                    .map(oToken => oToken.getKey())
-                    .join(","),
-                [constants.navParams.checkResultsPage.BSP_NAME]: this._oBspNameFilterInput
-                    .getTokens()
-                    .map(oToken => encodeURIComponent(oToken.getKey()))
-                    .join(",")
-            });
+        // this.getOwnerComponent().getModel().setData();
+        // check if the results model is filled, if so nothing has to be done
+        this._oViewModel.setProperty("/busy", true);
+
+        const mParams = {
+            defaultLanguage: this._oViewModel.getProperty("/defaultLanguage"),
+            compareAgainstDefaultFile: this._oViewModel.getProperty("/compareAgainstDefault"),
+            targetLanguages: this._oTargetLanguagesInput
+                .getTokens()
+                .map(oToken => oToken.getKey())
+                .join(","),
+            bspNames: this._oBspNameFilterInput
+                .getTokens()
+                .map(oToken => encodeURIComponent(oToken.getKey()))
+                .join(",")
+        };
+
+        let aCheckResults = [];
+        let iWithErrorsCount = 0;
+        let iWithoutErrorsCount = 0;
+        try {
+            const oCheckService = new CheckI18nService();
+            const { data: sCheckResult } = await oCheckService.checkTranslations(mParams);
+            aCheckResults = JSON.parse(sCheckResult);
+            for (const oCheckResult of aCheckResults) {
+                switch (oCheckResult.status) {
+                    case "S":
+                    case "W":
+                        iWithoutErrorsCount++;
+                        break;
+                    case "E":
+                        iWithErrorsCount++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (oError) {
+            Log.error(oError);
+        }
+        this._oModel.setData({
+            results: aCheckResults,
+            count: aCheckResults.length,
+            withoutErrorsCount: iWithoutErrorsCount,
+            withErrorsCount: iWithErrorsCount
+        });
+        this._oViewModel.setProperty("/busy", false);
+        this.onFilterChange();
     }
 
-    _onRouteMatched() {
-        setTimeout(() => {
-            this.getOwnerComponent().getModel().setData();
-        }, 150);
+    onFilterChange(oEvent) {
+        const oBinding = this.byId("checkResults").getBinding("items");
+        const sFilterKey = this._oViewModel.getProperty("/selectedFilter");
+        // Array to combine filters
+        const aFilters = [];
+        let oStatusFilter;
+
+        if (sFilterKey === "Ok") {
+            oStatusFilter = new Filter("status", "NE", "E");
+        } else if (sFilterKey === "Error") {
+            oStatusFilter = new Filter("status", "EQ", "E");
+        }
+        if (oStatusFilter) {
+            aFilters.push(oStatusFilter);
+        }
+        oBinding.filter(aFilters);
     }
 
     _addTokensToMultiInput(oInput, sValue) {

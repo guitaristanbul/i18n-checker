@@ -1,4 +1,6 @@
 import UIComponent from "sap/ui/core/UIComponent";
+import FlexibleColumnLayoutSemanticHelper from "sap/f/FlexibleColumnLayoutSemanticHelper";
+import UriParameters from "sap/base/util/UriParameters";
 import models from "./model/models";
 
 /**
@@ -22,6 +24,16 @@ export default class I18nCheckerComponent extends UIComponent {
         this.getRouter().initialize();
         // set the device model
         this.setModel(models.createDeviceModel(), "device");
+        this._oLayoutModel = models.createViewModel();
+        this.setModel(this._oLayoutModel, "layout");
+    }
+
+    /**
+     * Returns model which is concerned with the layout
+     * @returns {sap.ui.model.json.JSONModel} the model for the layout
+     */
+    getLayoutModel() {
+        return this._oLayoutModel;
     }
     /**
      * Returns the i18n bundle
@@ -32,6 +44,24 @@ export default class I18nCheckerComponent extends UIComponent {
             this._oBundle = this.getModel("i18n")?.getResourceBundle();
         }
         return this._oBundle;
+    }
+
+    /**
+     * Returns an instance of the semantic helper
+     * @returns {sap.f.FlexibleColumnLayoutSemanticHelper} An instance of the semantic helper
+     */
+    getHelper() {
+        const oFlexColLayout = this.getRootControl().byId("flexColLayout");
+        const oParams = new UriParameters(window.location.href);
+        const oSettings = {
+            defaultTwoColumnLayoutType: sap.f.LayoutType.TwoColumnsMidExpanded,
+            defaultThreeColumnLayoutType: sap.f.LayoutType.ThreeColumnsMidExpanded,
+            mode: oParams.get("mode"),
+            initialColumnsCount: oParams.get("initial"),
+            maxColumnsCount: oParams.get("max")
+        };
+
+        return FlexibleColumnLayoutSemanticHelper.getInstanceFor(oFlexColLayout, oSettings);
     }
 
     destroy() {
