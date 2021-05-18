@@ -2,6 +2,8 @@ import UIComponent from "sap/ui/core/UIComponent";
 import FlexibleColumnLayoutSemanticHelper from "sap/f/FlexibleColumnLayoutSemanticHelper";
 import UriParameters from "sap/base/util/UriParameters";
 import models from "./model/models";
+// register custom icons
+import "./model/customIcons";
 
 /**
  * @extends sap.ui.core.UIComponent
