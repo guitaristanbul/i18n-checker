@@ -22,6 +22,10 @@
                             wrapping="true"/>
                     </m:HBox>
                 </expandedHeading>
+                <actions>
+                    <m:Button icon="sap-icon://fontawesome/git"
+                        tooltip="Assign Git Repo"/>
+                </actions>
 
                 <navigationActions>
                     <m:OverflowToolbarButton type="Transparent"
@@ -62,6 +66,7 @@
                         titleUppercase="false">
                         <m:Table id="checkResults"
                             inset="false"
+                            mode="MultiSelect"
                             items="{ 
                                         path: 'i18nResults',
                                         sorter: {
@@ -84,7 +89,7 @@
                                 </m:Column>
                             </m:columns>
                             <m:items>
-                                <m:ColumnListItem>
+                                <m:ColumnListItem type="Active">
                                     <m:cells>
                                         <m:ObjectIdentifier title="{file/path}"/>
                                         <m:Text text="{file/name}" />
@@ -92,7 +97,7 @@
                                             path: 'messageType',
                                             formatter: '.formatter.getTextForKey'
                                         }"/>
-                                        <m:Text text="{message}" />
+                                        <m:FormattedText htmlText="{message}" />
                                     </m:cells>
                                 </m:ColumnListItem>
                             </m:items>

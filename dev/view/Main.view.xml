@@ -3,7 +3,6 @@
 	xmlns="sap.m"
 	xmlns:f="sap.f"
 	xmlns:fb="sap.ui.comp.filterbar"
-	xmlns:vm="sap.ui.comp.variants"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	height="100%">
@@ -13,8 +12,7 @@
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<vm:VariantManagement standardItemText="Standard">
-					</vm:VariantManagement>
+					<Title text="{i18n>appTitle}"></Title>
 				</f:heading>
 			</f:DynamicPageTitle>
 		</f:title>
@@ -27,6 +25,7 @@
 						persistencyKey="filterVariantPK"
 						search="onSearch"
 						useToolbar="false"
+						showFilterConfiguration="false"
 						showGoOnFB="true">
 						<fb:filterGroupItems>
 							<fb:FilterGroupItem name="defaultLangaugeFilter"
@@ -113,11 +112,11 @@
 								selectionChange="onFilterChange">
 								<items>
 									<SegmentedButtonItem key="All"
-										text="{i18n>all}" />
+										text="{i18n>all} ({/count})" />
 									<SegmentedButtonItem key="Error"
-										text="{i18n>withErrors}" />
+										text="{i18n>withErrors} ({/withErrorsCount})" />
 									<SegmentedButtonItem key="Ok"
-										text="{i18n>withoutErrors}" />
+										text="{i18n>withoutErrors} ({/withoutErrorsCount})" />
 								</items>
 							</SegmentedButton>
 						</content>
@@ -134,6 +133,9 @@
 						minScreenWidth="500px">
 						<Text text="{i18n>descriptionCol}" />
 					</Column>
+					<Column width="8em">
+						<Text text="Messages" />
+					</Column>
 				</columns>
 				<items>
 					<ColumnListItem type="Navigation"
@@ -143,6 +145,7 @@
 							<Text text="{ path: 'isApp', formatter: '.formatter.getRepoTypeText'}" />
 							<Text text="{description}"
 								wrapping="false" />
+							<Text text="{= ${i18nResults}.length }" />
 						</cells>
 					</ColumnListItem>
 				</items>
