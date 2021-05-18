@@ -9,4 +9,12 @@ import Controller from "sap/ui/core/mvc/Controller";
  */
 export default class BaseController extends Controller {
     onInit() {}
+
+    /**
+     * Retrieves the configurated router instance
+     * @returns {sap.m.routing.Router} the router of the application
+     */
+    getRouter() {
+        return this.getOwnerComponent().getRouter();
+    }
 }

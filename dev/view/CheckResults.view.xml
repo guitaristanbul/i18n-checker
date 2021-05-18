@@ -6,27 +6,29 @@
 	xmlns="sap.m">
 	<semantic:FullscreenPage id="resultsPage"
 		navButtonPress="onNavigate"
+		title="{i18n>resultPageTitle}"
 		busy="{viewModel>/busy}">
 		<semantic:content>
-			<Panel id="panel">
+			<Panel id="panel"
+				class="sapUiNoContentPadding">
 				<IconTabBar id="idIconTabBar"
 					select="onFilterSelect"
-					selectedKey="Error"
-					class="sapUiResponsiveContentPadding">
+					selectedKey="{viewModel>/selectedFilter}"
+					class="sapUiNoContentPadding">
 					<items>
 						<IconTabFilter showAll="true"
-							count="{checkResults>/count}"
+							count="{/count}"
 							text="UI5 Repositories"
 							key="All" />
 						<IconTabSeparator />
 						<IconTabFilter icon="sap-icon://accept"
 							iconColor="Positive"
-							count="{checkResults>/withoutErrorsCount}"
+							count="{/withoutErrorsCount}"
 							text="Ok"
 							key="Ok" />
 						<IconTabFilter icon="sap-icon://error"
 							iconColor="Negative"
-							count="{checkResults>/withErrorsCount}"
+							count="{/withErrorsCount}"
 							text="Error"
 							key="Error" />
 					</items>
@@ -36,7 +38,7 @@
 							showSeparators="Inner"
 							headerText="Check Results"
 							items="{
-								path: 'checkResults>/results',
+								path: '/results',
 								sorter: {
 									path: 'bspName'
 								}
@@ -50,10 +52,11 @@
 								</Column>
 							</columns>
 							<items>
-								<ColumnListItem>
+								<ColumnListItem type="Navigation"
+									press="onResultsPress">
 									<cells>
-										<ObjectIdentifier title="{checkResults>bspName}"/>
-										<Text text="{checkResults>description}" />
+										<ObjectIdentifier title="{bspName}"/>
+										<Text text="{description}" />
 									</cells>
 								</ColumnListItem>
 							</items>

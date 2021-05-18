@@ -62,7 +62,7 @@
                 "type": "sap.ui.model.resource.ResourceModel",
                 "uri": "i18n/i18n.properties"
             },
-            "checkResults": {
+            "": {
                 "type": "sap.ui.model.json.JSONModel"
             }
         },
@@ -91,8 +91,13 @@
                 },
                 {
                     "name": "CheckResults",
-                    "pattern": "/checkResults?defaultLang={defLang}&compAgainstDef={compAgainstDef}&trgtLang={trgtLang}&bspName={bspName}",
+                    "pattern": "/checkResults{?query}",
                     "target": ["CheckResults"]
+                },
+                {
+                    "name": "CheckDetails",
+                    "pattern": "/checkDetails{?query}",
+                    "target": ["CheckDetails"]
                 }
             ],
             "targets": {
@@ -101,14 +106,24 @@
                     "transition": "slide",
                     "clearControlAggregation": false,
                     "viewId": "Main",
-                    "viewName": "Main"
+                    "viewName": "Main",
+                    "viewLevel": 1
                 },
                 "CheckResults": {
                     "viewType": "XML",
                     "transition": "slide",
                     "clearControlAggregation": false,
                     "viewId": "CheckResults",
-                    "viewName": "CheckResults"
+                    "viewName": "CheckResults",
+                    "viewLevel": 2
+                },
+                "CheckDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "CheckDetails",
+                    "viewName": "CheckDetails",
+                    "viewLevel": 3
                 }
             }
         }

@@ -6,7 +6,8 @@
 	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	xmlns="sap.m">
 
-	<semantic:FullscreenPage id="page">
+	<semantic:FullscreenPage id="page"
+		title="{i18n>appTitle}">
 		<semantic:content>
 			<Panel id="paramsPanel">
 				<form:Form id="paramsForm"

@@ -1,0 +1,104 @@
+<mvc:View controllerName="devepos.i18ncheck.controller.CheckDetails"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:semantic="sap.m.semantic"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns="sap.uxap">
+    <semantic:FullscreenPage id="detailsPage"
+        navButtonPress="onNavigate"
+        title="{i18n>resultDetailPageTitle}"
+        busy="{viewModel>/busy}">
+        <semantic:content>
+            <m:Panel id="panel"
+                class="sapUiNoContentPadding">
+                <ObjectPageLayout id="ObjectPageLayout"
+                    class="sapUiNoContentPadding"
+                    showTitleInHeaderContent="true"
+                    showAnchorBar="true"
+                    showEditHeaderButton="true"
+                    editHeaderButtonPress="handleEditBtnPress"
+                    upperCaseAnchorBar="false">
+                    <headerTitle>
+                        <ObjectPageDynamicHeaderTitle>
+                            <expandedHeading>
+                                <m:HBox>
+                                    <m:Title text="{bspName}"
+                                        wrapping="true"/>
+                                </m:HBox>
+                            </expandedHeading>
+                        </ObjectPageDynamicHeaderTitle>
+                    </headerTitle>
+
+                    <headerContent>
+                        <m:FlexBox wrap="Wrap">
+                            <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+                                <m:Label text="{= 'Checked file count: ' + ${checkedFiles}}" />
+                            </layout:VerticalLayout>
+                        </m:FlexBox>
+                    </headerContent>
+
+                    <sections>
+                        <ObjectPageSection titleUppercase="false"
+                            id="messagesSection"
+                            title="Messages"
+                            importance="Medium">
+
+                            <subSections>
+                                <ObjectPageSubSection id="personalSectionSS1"
+                                    titleUppercase="false">
+                                    <m:Table id="checkResults"
+                                        inset="false"
+                                        showSeparators="Inner"
+                                        items="{ path: 'i18nResults',
+                                                 sorter: {
+                                                    path: 'file/path'
+                                                 }
+                                                }">
+                                        <m:columns>
+                                            <m:Column width="30em" mergeDuplicates="true">
+                                                <m:Text text="File Path" />
+                                            </m:Column>
+                                            <m:Column width="15em" mergeDuplicates="true">
+                                                <m:Text text="File Name" />
+                                            </m:Column>
+                                            <m:Column width="20em" mergeDuplicates="true">
+                                                <m:Text text="Message Type Text" />
+                                            </m:Column>
+                                            <m:Column width="auto">
+                                                <m:Text text="Message" />
+                                            </m:Column>
+                                        </m:columns>
+                                        <m:items>
+                                            <m:ColumnListItem>
+                                                <m:cells>
+                                                    <m:ObjectIdentifier title="{file/path}"/>
+                                                    <m:Text text="{file/name}" />
+                                                    <core:Icon src="sap-icon://error"
+                                                        color="red"></core:Icon>
+                                                    <m:Text text="{messageType}" />
+                                                    <m:Text text="{message}" />
+                                                </m:cells>
+                                            </m:ColumnListItem>
+                                        </m:items>
+                                    </m:Table>
+                                </ObjectPageSubSection>
+
+                            </subSections>
+                        </ObjectPageSection>
+                    </sections>
+                    <footer>
+                        <m:OverflowToolbar>
+                            <m:ToolbarSpacer />
+                            <m:Button type="Accept"
+                                text="Accept"/>
+                            <m:Button type="Reject"
+                                text="Reject"/>
+                        </m:OverflowToolbar>
+                    </footer>
+                </ObjectPageLayout>
+            </m:Panel>
+        </semantic:content>
+    </semantic:FullscreenPage>
+</mvc:View>

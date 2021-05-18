@@ -17,26 +17,78 @@ export default class CheckResultsController extends BaseController {
         BaseController.prototype.onInit.call(this);
         this._oPage = this.byId("resultsPage");
         if (!document.querySelector(".sapUshellShell")) {
-            this._oPage.setTitle(this.getOwnerComponent().getResourceBundle().getText("resultPageTitle"));
             this._oPage.setShowNavButton(true);
         }
-        this.getOwnerComponent().getRouter().getRoute("CheckResults").attachPatternMatched(this._onRouteMatched, this);
-        this._oViewModel = models.createViewModel({ busy: false });
+        this._oViewModel = models.createViewModel({ busy: false, selectedFilter: "All" });
         this.getView().setModel(this._oViewModel, "viewModel");
+        this.getRouter().getRoute("CheckResults").attachPatternMatched(this._onRouteMatched, this);
+    }
+
+    onNavigate(oEvent) {
+        this.getRouter()?.navTo("Main");
+    }
+
+    onResultsPress(oEvent) {
+        // const oSelectedBsp = this.getOwnerComponent()
+        //     .getModel()
+        //     ?.getObject(oEvent.getSource()?.getBindingContextPath());
+        // if (!oSelectedBsp) {
+        //     return;
+        // }
+        const sBindingPath = oEvent.getSource()?.getBindingContextPath();
+        if (!sBindingPath) {
+            return;
+        }
+        this.getOwnerComponent()
+            .getRouter()
+            .navTo("CheckDetails", {
+                "?query": {
+                    // bspName: encodeURIComponent(oSelectedBsp.bspName)
+                    path: encodeURIComponent(sBindingPath)
+                }
+            });
+    }
+
+    onFilterSelect(oEvent) {
+        const oBinding = this.byId("checkResults").getBinding("items");
+        const sKey = oEvent.getParameter("key");
+        // Array to combine filters
+        const aFilters = [];
+        let oStatusFilter;
+
+        if (sKey === "Ok") {
+            oStatusFilter = new Filter("status", "NE", "E");
+        } else if (sKey === "Error") {
+            oStatusFilter = new Filter("status", "EQ", "E");
+        }
+        if (oStatusFilter) {
+            aFilters.push(oStatusFilter);
+        }
+        oBinding.filter(aFilters);
     }
 
     async _onRouteMatched(oEvent) {
+        // check if the results model is filled, if so nothing has to be done
+        let aCheckResults = this.getOwnerComponent().getModel().getProperty("/results");
+        if (aCheckResults && Array.isArray(aCheckResults) && aCheckResults.length > 0) {
+            return;
+        }
         this._oViewModel.setProperty("/busy", true);
 
         const oUrlParams = oEvent.getParameter("arguments");
+        if (!oUrlParams.hasOwnProperty("?query")) {
+            Log.error("'?query' was not supplied to route");
+            return;
+        }
+        const mQueryParams = oUrlParams["?query"];
         const mParams = {
-            defaultLanguage: oUrlParams[constants.navParams.checkResultsPage.DEFAULT_LANGUAGE],
-            compareAgainstDefaultFile: oUrlParams[constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE],
-            bspNames: oUrlParams[constants.navParams.checkResultsPage.BSP_NAME],
-            targetLanguages: oUrlParams[constants.navParams.checkResultsPage.TARGET_LANGUAGE]
+            defaultLanguage: mQueryParams[constants.navParams.checkResultsPage.DEFAULT_LANGUAGE],
+            compareAgainstDefaultFile: mQueryParams[constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE],
+            bspNames: mQueryParams[constants.navParams.checkResultsPage.BSP_NAME],
+            targetLanguages: mQueryParams[constants.navParams.checkResultsPage.TARGET_LANGUAGE]
         };
 
-        let aCheckResults = [];
+        aCheckResults = [];
         let iWithErrorsCount = 0;
         let iWithoutErrorsCount = 0;
         try {
@@ -59,34 +111,15 @@ export default class CheckResultsController extends BaseController {
         } catch (oError) {
             Log.error(oError);
         }
-        this.getOwnerComponent().getModel("checkResults").setData({
+        this.getOwnerComponent().getModel().setData({
             results: aCheckResults,
             count: aCheckResults.length,
             withoutErrorsCount: iWithoutErrorsCount,
             withErrorsCount: iWithErrorsCount
         });
         this._oViewModel.setProperty("/busy", false);
-    }
-
-    onNavigate(oEvent) {
-        this.getOwnerComponent().getRouter()?.navTo("Main");
-    }
-
-    onFilterSelect(oEvent) {
         const oBinding = this.byId("checkResults").getBinding("items");
-        const sKey = oEvent.getParameter("key");
-        // Array to combine filters
-        const aFilters = [];
-        let oStatusFilter;
-
-        if (sKey === "Ok") {
-            oStatusFilter = new Filter("status", "NE", "E");
-        } else if (sKey === "Error") {
-            oStatusFilter = new Filter("status", "EQ", "E");
-        }
-        if (oStatusFilter) {
-            aFilters.push(oStatusFilter);
-        }
-        oBinding.filter(aFilters);
+        oBinding.filter([new Filter("status", "EQ", "E")]);
+        this._oViewModel.setProperty("/selectedFilter", "Error");
     }
 }

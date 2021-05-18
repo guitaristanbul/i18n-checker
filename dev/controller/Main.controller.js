@@ -15,9 +15,6 @@ export default class MainController extends BaseController {
     onInit() {
         BaseController.prototype.onInit.call(this);
         this._oPage = this.byId("page");
-        if (!document.querySelector(".sapUshellShell")) {
-            this._oPage.setTitle(this.getOwnerComponent().getResourceBundle().getText("mainPageTitle"));
-        }
         this._oViewModel = models.createViewModel({
             compareAgainstDefault: true,
             defaultLanguage: "en"
@@ -27,11 +24,11 @@ export default class MainController extends BaseController {
         this._oTargetLanguagesInput = this.getView().byId("trgtLanguagesInput");
         this._oBspNameFilterInput = this.getView().byId("bspNameFilter");
         this.getView()
-            .byId("paramsPanel")
+            .byId("page")
             .attachBrowserEvent(
                 "keyup",
                 oEvent => {
-                    if (oEvent.key === "Enter" && oEvent.ctrlKey && !oEvent.metaKey && !oEvent.shiftKey) {
+                    if (oEvent.key === "F8" && !oEvent.ctrlKey && !oEvent.metaKey && !oEvent.shiftKey) {
                         this.onExecuteCheck();
                     }
                 },
@@ -61,27 +58,30 @@ export default class MainController extends BaseController {
         if (!this._validateFields()) {
             return;
         }
+        this.getOwnerComponent().getModel().setData();
         this.getOwnerComponent()
             .getRouter()
             ?.navTo("CheckResults", {
-                [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]:
-                    this._oViewModel.getProperty("/defaultLanguage"),
-                [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]:
-                    this._oViewModel.getProperty("/compareAgainstDefault"),
-                [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: this._oTargetLanguagesInput
-                    .getTokens()
-                    .map(oToken => oToken.getKey())
-                    .join(","),
-                [constants.navParams.checkResultsPage.BSP_NAME]: this._oBspNameFilterInput
-                    .getTokens()
-                    .map(oToken => encodeURIComponent(oToken.getKey()))
-                    .join(",")
+                "?query": {
+                    [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]:
+                        this._oViewModel.getProperty("/defaultLanguage"),
+                    [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]:
+                        this._oViewModel.getProperty("/compareAgainstDefault"),
+                    [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: this._oTargetLanguagesInput
+                        .getTokens()
+                        .map(oToken => oToken.getKey())
+                        .join(","),
+                    [constants.navParams.checkResultsPage.BSP_NAME]: this._oBspNameFilterInput
+                        .getTokens()
+                        .map(oToken => encodeURIComponent(oToken.getKey()))
+                        .join(",")
+                }
             });
     }
 
     _onRouteMatched() {
         setTimeout(() => {
-            this.getOwnerComponent().getModel("checkResults").setData();
+            this.getOwnerComponent().getModel().setData();
         }, 150);
     }
 

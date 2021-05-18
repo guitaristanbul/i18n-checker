@@ -18,8 +18,8 @@ export default class CheckI18nService {
     async checkTranslations(mParams) {
         let sUrlParams = `?defLang=${mParams.defaultLanguage}`;
         sUrlParams += `&compAgainstDef=${mParams.compareAgainstDefaultFile}`;
-        sUrlParams += `&trgtLang=${mParams.targetLanguages}`;
-        sUrlParams += `&bspName=${mParams.bspNames}`;
+        mParams.targetLanguages.split(",").forEach(sTrgtLang => (sUrlParams += `&trgtLang=${sTrgtLang}`));
+        mParams.bspNames.split(",").forEach(sBspName => (sUrlParams += `&bspName=${sBspName}`));
         return ajax.send(`/sap/bc/zi18nchksrv/checkResults${sUrlParams}`);
     }
 }
