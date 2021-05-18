@@ -18,12 +18,12 @@ export default class CheckDetailsController extends BaseController {
             this.getRouter().navTo("Main");
         }
         const oUrlParams = oEvent.getParameter("arguments");
-        if (!oUrlParams.hasOwnProperty("?query")) {
-            Log.error("'?query' was not supplied to route");
+        if (!oUrlParams.hasOwnProperty("path")) {
+            Log.error("'path' was not supplied to route");
             window.go(-1);
             return;
         }
-        const sBindingPath = decodeURIComponent(oUrlParams["?query"].path);
+        const sBindingPath = decodeURIComponent(oUrlParams.path);
 
         this.getView().bindElement({
             path: sBindingPath,

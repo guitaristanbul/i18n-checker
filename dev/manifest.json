@@ -91,12 +91,12 @@
                 },
                 {
                     "name": "CheckResults",
-                    "pattern": "/checkResults{?query}",
+                    "pattern": "/checkResults?defLang={defLang}&compAgainstDef={compAgainstDef}&trgtLang={trgtLang}&bspName={bspName}",
                     "target": ["CheckResults"]
                 },
                 {
                     "name": "CheckDetails",
-                    "pattern": "/checkDetails{?query}",
+                    "pattern": "/checkDetails?path={path}",
                     "target": ["CheckDetails"]
                 }
             ],

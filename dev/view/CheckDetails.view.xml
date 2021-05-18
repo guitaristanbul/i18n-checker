@@ -75,8 +75,6 @@
                                                 <m:cells>
                                                     <m:ObjectIdentifier title="{file/path}"/>
                                                     <m:Text text="{file/name}" />
-                                                    <core:Icon src="sap-icon://error"
-                                                        color="red"></core:Icon>
                                                     <m:Text text="{messageType}" />
                                                     <m:Text text="{message}" />
                                                 </m:cells>

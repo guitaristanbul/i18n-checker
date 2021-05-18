@@ -42,10 +42,7 @@ export default class CheckResultsController extends BaseController {
         this.getOwnerComponent()
             .getRouter()
             .navTo("CheckDetails", {
-                "?query": {
-                    // bspName: encodeURIComponent(oSelectedBsp.bspName)
-                    path: encodeURIComponent(sBindingPath)
-                }
+                path: encodeURIComponent(sBindingPath)
             });
     }
 
@@ -76,16 +73,15 @@ export default class CheckResultsController extends BaseController {
         this._oViewModel.setProperty("/busy", true);
 
         const oUrlParams = oEvent.getParameter("arguments");
-        if (!oUrlParams.hasOwnProperty("?query")) {
-            Log.error("'?query' was not supplied to route");
+        if (!oUrlParams) {
+            Log.error("'Query parameters' were not supplied to route");
             return;
         }
-        const mQueryParams = oUrlParams["?query"];
         const mParams = {
-            defaultLanguage: mQueryParams[constants.navParams.checkResultsPage.DEFAULT_LANGUAGE],
-            compareAgainstDefaultFile: mQueryParams[constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE],
-            bspNames: mQueryParams[constants.navParams.checkResultsPage.BSP_NAME],
-            targetLanguages: mQueryParams[constants.navParams.checkResultsPage.TARGET_LANGUAGE]
+            defaultLanguage: oUrlParams[constants.navParams.checkResultsPage.DEFAULT_LANGUAGE],
+            compareAgainstDefaultFile: oUrlParams[constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE],
+            bspNames: oUrlParams[constants.navParams.checkResultsPage.BSP_NAME],
+            targetLanguages: oUrlParams[constants.navParams.checkResultsPage.TARGET_LANGUAGE]
         };
 
         aCheckResults = [];

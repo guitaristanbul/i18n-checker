@@ -62,20 +62,18 @@ export default class MainController extends BaseController {
         this.getOwnerComponent()
             .getRouter()
             ?.navTo("CheckResults", {
-                "?query": {
-                    [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]:
-                        this._oViewModel.getProperty("/defaultLanguage"),
-                    [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]:
-                        this._oViewModel.getProperty("/compareAgainstDefault"),
-                    [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: this._oTargetLanguagesInput
-                        .getTokens()
-                        .map(oToken => oToken.getKey())
-                        .join(","),
-                    [constants.navParams.checkResultsPage.BSP_NAME]: this._oBspNameFilterInput
-                        .getTokens()
-                        .map(oToken => encodeURIComponent(oToken.getKey()))
-                        .join(",")
-                }
+                [constants.navParams.checkResultsPage.DEFAULT_LANGUAGE]:
+                    this._oViewModel.getProperty("/defaultLanguage"),
+                [constants.navParams.checkResultsPage.COMPARE_AGAINST_DEFAULT_FILE]:
+                    this._oViewModel.getProperty("/compareAgainstDefault"),
+                [constants.navParams.checkResultsPage.TARGET_LANGUAGE]: this._oTargetLanguagesInput
+                    .getTokens()
+                    .map(oToken => oToken.getKey())
+                    .join(","),
+                [constants.navParams.checkResultsPage.BSP_NAME]: this._oBspNameFilterInput
+                    .getTokens()
+                    .map(oToken => encodeURIComponent(oToken.getKey()))
+                    .join(",")
             });
     }
 
