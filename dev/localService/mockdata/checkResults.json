@@ -1,0 +1,602 @@
+[
+    {
+        "bspName": "EPMRA_POAPV",
+        "isApp": true,
+        "description": "SAP Fiori Reference Application: Approve Purchase Order",
+        "status": "E",
+        "gitUrl": "https://github.com/stockbal",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRA_PRODMAN",
+        "isApp": true,
+        "description": "SAP Fiori Reference Application: Manage Products",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRA_SHOP",
+        "isApp": true,
+        "description": "SAP Fiori Reference Application: Shop",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAQC_PO",
+        "isApp": true,
+        "description": "EPM Fiori Ref App Purchase Order Quick Create",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n/ListReport/SEPMRA_C_PO_PurOrd", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n/ObjectPage/SEPMRA_C_PO_PurOrd", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_PO_PurOrdItem",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAQC_PROD",
+        "isApp": true,
+        "description": "EPM Fiori Ref App Product Quick Create",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": {
+                    "path": "/i18n/ListReport/SEPMRA_C_PD_Product",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_PD_Product",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAQC_SO",
+        "isApp": true,
+        "description": "EPM Fiori Ref App Sales Order Quick Create",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": {
+                    "path": "/i18n/ListReport/SEPMRA_C_SalesOrder",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_SalesOrder",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_SalesOrderItem",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAQV_PO",
+        "isApp": true,
+        "description": "EPM Fiori Ref App Purchase Order Quick View",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n/ListReport/SEPMRA_C_PO_PurOrd", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n/ObjectPage/SEPMRA_C_PO_PurOrd", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_PO_PurOrdItem",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAQV_PROD",
+        "isApp": true,
+        "description": "EPM Fiori Ref App Product Quick View",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": {
+                    "path": "/i18n/ListReport/SEPMRA_C_PD_Product",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_PD_Product",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAQV_SO",
+        "isApp": true,
+        "description": "EPM Fiori Ref App Sales Order Quick View",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": {
+                    "path": "/i18n/ListReport/SEPMRA_C_SalesOrder",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_SalesOrder",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_SalesOrderItem",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAST_OVP",
+        "isApp": true,
+        "description": "SAP Fiori Reference App for SAP Dev: Overview",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAST_PRODMAN",
+        "isApp": true,
+        "description": "SAP Fiori Smart Template Reference App: Manage Products",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": {
+                    "path": "/i18n/ListReport/SEPMRA_C_PD_Product",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_PD_Product",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPMRAST_SOMAN",
+        "isApp": true,
+        "description": "SAP Fiori Smart Template Reference App: Manage Sales Orders",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": {
+                    "path": "/i18n/ListReport/SEPMRA_C_SalesOrder",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_SalesOrder",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": {
+                    "path": "/i18n/ObjectPage/SEPMRA_C_SalesOrderItem",
+                    "name": "i18n_de.properties",
+                    "language": ""
+                },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            },
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPM_REF_GRPOST",
+        "isApp": true,
+        "description": "SAP Fiori Reference App for SAP Dev: Post Goods Receipts",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPM_REF_LIB",
+        "isApp": false,
+        "description": "SAP Fiori Reference App for SAP Dev: Reuse Library",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/", "name": "messagebundle_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPM_REF_POAPV",
+        "isApp": true,
+        "description": "SAP Fiori Reference App for SAP Dev: Approve Purchase Orders",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPM_REF_POMAN",
+        "isApp": true,
+        "description": "EPM Reference for Purchase Order Management",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPM_REF_PRODMAN",
+        "isApp": true,
+        "description": "EPM Reference for  Product Catalog Management",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPM_REF_SHOP",
+        "isApp": true,
+        "description": "EPM Reference Shop",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    },
+    {
+        "bspName": "EPM_REF_SOCRE",
+        "isApp": true,
+        "description": "SAP Fiori Reference App for SAP Dev: Create Sales Orders",
+        "status": "E",
+        "checkedFiles": 0,
+        "i18nResults": [
+            {
+                "file": { "path": "/i18n", "name": "i18n_de.properties", "language": "" },
+                "message": "The language file for locale <strong>de</strong> is missing",
+                "messageType": "missing_i18_file",
+                "syMsgType": "E",
+                "key": "",
+                "value": "",
+                "defaultValue": ""
+            }
+        ]
+    }
+]
