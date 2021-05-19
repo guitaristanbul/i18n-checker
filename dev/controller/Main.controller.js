@@ -6,6 +6,7 @@ import Token from "sap/m/Token";
 import ValueState from "sap/ui/core/ValueState";
 import Log from "sap/base/Log";
 import Filter from "sap/ui/model/Filter";
+import MessageToast from "sap/m/MessageToast";
 
 /**
  * Main View Controller
@@ -123,8 +124,15 @@ export default class MainController extends BaseController {
                         break;
                 }
             }
+            if (!aCheckResults || aCheckResults.length === 0) {
+                MessageToast.show(this._oBundle.getText("noDataFoundMessage"));
+            }
         } catch (oError) {
-            Log.error(oError);
+            const sErrorMessage = oError.statusText
+                ? oError.statusText
+                : "Error during calling the 'check i18n translations' service";
+            Log.error(sErrorMessage);
+            MessageToast.show(sErrorMessage);
         }
         this._oModel.setData({
             results: aCheckResults,
