@@ -109,8 +109,8 @@ export default class MainController extends BaseController {
         let iWithoutErrorsCount = 0;
         try {
             const oCheckService = new CheckI18nService();
-            const { data: sCheckResult } = await oCheckService.checkTranslations(mParams);
-            aCheckResults = JSON.parse(sCheckResult);
+            const oResponse = await oCheckService.checkTranslations(mParams);
+            aCheckResults = oResponse.data;
             for (const oCheckResult of aCheckResults) {
                 switch (oCheckResult.status) {
                     case "S":
