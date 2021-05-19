@@ -9,25 +9,17 @@
 
     <ObjectPageLayout id="ObjectPageLayout"
         class="sapUiNoContentPadding"
-        showTitleInHeaderContent="true"
-        showAnchorBar="true"
-        showEditHeaderButton="true"
-        editHeaderButtonPress="handleEditBtnPress"
+        showTitleInHeaderContent="false"
         upperCaseAnchorBar="false">
         <headerTitle>
-            <ObjectPageDynamicHeaderTitle>
-                <expandedHeading>
-                    <m:HBox>
-                        <m:Title text="{= ${bspName} + ' - ' + ${description} }"
-                            wrapping="true"/>
-                    </m:HBox>
-                </expandedHeading>
+            <ObjectPageHeader objectTitle="{bspName}"
+                objectSubtitle="{description}"
+                isObjectTitleAlwaysVisible="true"
+                isObjectSubtitleAlwaysVisible="true">
                 <actions>
-                    <m:Button icon="sap-icon://fontawesome/git"
-                        tooltip="Assign Git Repo"/>
-                </actions>
-
-                <navigationActions>
+                    <m:OverflowToolbarButton icon="sap-icon://fontawesome/git"
+                        tooltip="{i18n>gitRepositoryAssignAction}"
+                        press="onAssignGitRepo"/>
                     <m:OverflowToolbarButton type="Transparent"
                         icon="sap-icon://full-screen"
                         press="handleFullScreen"
@@ -43,14 +35,29 @@
                         press="handleClose"
                         tooltip="Close column"
                         visible="{= ${layout>/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
-                </navigationActions>
-            </ObjectPageDynamicHeaderTitle>
+                </actions>
+            </ObjectPageHeader>
         </headerTitle>
 
         <headerContent>
             <m:FlexBox wrap="Wrap">
                 <layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
-                    <m:Label text="{= 'Checked file count: ' + ${checkedFiles}}" />
+                    <m:HBox alignItems="Center">
+                        <m:Label text="{i18n>checkedFileCount}"
+                            class="sapUiTinyMarginEnd" />
+                        <m:Text text="{checkedFiles}"
+                            textAlign="Initial" />
+                    </m:HBox>
+                    <m:HBox alignItems="Center">
+                        <m:Label class="sapUiTinyMarginEnd"
+                            text="{i18n>gitRepository}" />
+                        <m:Link href="{gitUrl}"
+                            text="{gitUrl}"
+                            target="__blank"
+                            visible="{= !!${gitUrl}}"/>
+                        <m:Label text="{i18n>noGitRepoAssigned}"
+                            visible="{= !${gitUrl}}"/>
+                    </m:HBox>
                 </layout:VerticalLayout>
             </m:FlexBox>
         </headerContent>

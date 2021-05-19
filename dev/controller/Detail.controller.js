@@ -1,8 +1,11 @@
 import BaseController from "./BaseController";
-import models from "devepos/i18ncheck/model/models";
-import Token from "sap/m/Token";
-import constants from "devepos/i18ncheck/model/constants";
+import Log from "sap/base/Log";
 import formatter from "devepos/i18ncheck/model/formatter";
+import models from "devepos/i18ncheck/model/models";
+import RepositoryInfoService from "devepos/i18ncheck/model/dataAccess/rest/RepositoryInfoService";
+import AsyncDialog from "devepos/i18ncheck/model/util/AsyncDialog";
+import MessageToast from "sap/m/MessageToast";
+import Fragment from "sap/ui/core/Fragment";
 
 /**
  * Detail View Controller
@@ -15,11 +18,45 @@ export default class DetailController extends BaseController {
     formatter = formatter;
     onInit() {
         this._oLayoutModel = this.getOwnerComponent().getLayoutModel();
-
+        this._oBundle = this.getOwnerComponent().getResourceBundle();
         const oRouter = this.getRouter();
         oRouter.getRoute("main").attachPatternMatched(this._onRouteMatched, this);
         oRouter.getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
         // oRouter.getRoute("detailDetail").attachPatternMatched(this._onRouteMatched, this);
+    }
+    async onAssignGitRepo(oEvent) {
+        const oContext = this.getView().getBindingContext();
+        const oCurrentBsp = oContext?.getObject();
+        if (!oCurrentBsp) {
+            return;
+        }
+        const oDialogContent = await Fragment.load({ type: "XML", name: "devepos.i18ncheck.fragment.ChangeGitRepo" });
+        const oDialogModel = models.createViewModel({ url: oCurrentBsp.gitUrl });
+        // show dialog
+        const oDialog = new AsyncDialog({
+            title: this._oBundle.getText("gitRepositoryAssignDialogTitle"),
+            width: "45em",
+            height: "8em",
+            content: oDialogContent,
+            model: oDialogModel
+        });
+        const sResult = await oDialog.showDialog(this.getView());
+        if (sResult !== AsyncDialog.OK_BUTTON) {
+            return;
+        }
+        const sGitUrl = oDialogModel.getProperty("/url");
+
+        try {
+            const oRepoInfoService = new RepositoryInfoService();
+            await oRepoInfoService.updateRepoInfo({
+                bspName: oCurrentBsp.bspName,
+                gitUrl: sGitUrl
+            });
+            oContext.getModel().setProperty(`${oContext.sPath}/gitUrl`, sGitUrl);
+            MessageToast.show(this._oBundle.getText("gitRepoUrlUpdated", oCurrentBsp.bspName));
+        } catch (oError) {
+            Log.error(oError);
+        }
     }
     handleItemPress(oEvent) {
         // var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
