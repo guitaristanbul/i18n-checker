@@ -95,7 +95,11 @@
 				inset="false"
 				updateFinished="onUpdateFinished"
 				busy="{viewModel>/busy}"
+				sticky="ColumnHeaders,HeaderToolbar"
 				busyIndicatorDelay="300"
+				growing="true"
+				growingThreshold="50"
+				growingScrollToLoad="true"
 				class="sapFDynamicPageAlignContent"
 				showSeparators="Inner"
 				items="{

@@ -1,6 +1,7 @@
 import BaseController from "./BaseController";
 import Log from "sap/base/Log";
 import formatter from "devepos/i18ncheck/model/formatter";
+import formatMessage from "sap/base/strings/formatMessage";
 import models from "devepos/i18ncheck/model/models";
 import RepositoryInfoService from "devepos/i18ncheck/model/dataAccess/rest/RepositoryInfoService";
 import AsyncDialog from "devepos/i18ncheck/model/util/AsyncDialog";
@@ -16,6 +17,7 @@ import Fragment from "sap/ui/core/Fragment";
  */
 export default class DetailController extends BaseController {
     formatter = formatter;
+    formatMessage = formatMessage;
     onInit() {
         this._oLayoutModel = this.getOwnerComponent().getLayoutModel();
         this._oBundle = this.getOwnerComponent().getResourceBundle();

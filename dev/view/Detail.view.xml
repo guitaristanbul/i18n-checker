@@ -99,7 +99,7 @@
         <sections>
             <ObjectPageSection titleUppercase="false"
                 id="messagesSection"
-                title="{i18n>messagesTableTitle}"
+                title="{i18n>messagesSectionTitle}"
                 importance="Medium">
 
                 <subSections>
@@ -107,7 +107,10 @@
                         titleUppercase="false">
                         <m:Table id="checkResults"
                             inset="false"
+                            sticky="ColumnHeaders,HeaderToolbar"
                             mode="MultiSelect"
+                            growing="true"
+                            growingScrollToLoad="true"
                             selectionChange="onMessageTableSelectionChange"
                             items="{ 
                                         path: 'i18nResults',
@@ -117,6 +120,13 @@
                                     }">
                             <m:headerToolbar>
                                 <m:OverflowToolbar>
+                                    <m:Title text="{
+                                                        parts: [
+                                                            'i18n>messagesTableTitle',
+                                                            'i18nResults/length'
+                                                        ],
+                                                        formatter: '.formatMessage'
+                                                    }"/>
                                     <m:ToolbarSpacer />
                                     <m:ToggleButton icon="sap-icon://show"
                                         tooltip="{i18n>showIgnoredButton}"/>
