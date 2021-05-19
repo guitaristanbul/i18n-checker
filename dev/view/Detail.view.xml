@@ -125,7 +125,7 @@
                                 </m:OverflowToolbar>
                             </m:headerToolbar>
                             <m:columns>
-                                <m:Column width="30em">
+                                <m:Column>
                                     <m:Text text="{i18n>filePathCol}" />
                                 </m:Column>
                                 <m:Column width="10em">

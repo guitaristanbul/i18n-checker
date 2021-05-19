@@ -130,7 +130,7 @@
 						<Text text="{i18n>repositoryTypeCol}" />
 					</Column>
 					<Column demandPopin="true"
-						minScreenWidth="500px">
+						minScreenWidth="810px">
 						<Text text="{i18n>descriptionCol}" />
 					</Column>
 					<Column width="8em">
@@ -144,7 +144,7 @@
 							<ObjectIdentifier title="{bspName}"/>
 							<Text text="{ path: 'isApp', formatter: '.formatter.getRepoTypeText'}" />
 							<Text text="{description}"
-								wrapping="false" />
+								wrapping="true" />
 							<Text text="{= ${i18nResults}.length }" />
 						</cells>
 					</ColumnListItem>
