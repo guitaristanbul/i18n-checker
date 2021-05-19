@@ -19,10 +19,16 @@ export default class DetailController extends BaseController {
     onInit() {
         this._oLayoutModel = this.getOwnerComponent().getLayoutModel();
         this._oBundle = this.getOwnerComponent().getResourceBundle();
+        this._oViewModel = models.createViewModel({ ignoreActionEnabled: false });
+        this.getView().setModel(this._oViewModel, "viewModel");
         const oRouter = this.getRouter();
         oRouter.getRoute("main").attachPatternMatched(this._onRouteMatched, this);
         oRouter.getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
         // oRouter.getRoute("detailDetail").attachPatternMatched(this._onRouteMatched, this);
+    }
+    onMessageTableSelectionChange(oEvent) {
+        const oTable = oEvent.getSource();
+        this._oViewModel.setProperty("/ignoreActionEnabled", oTable.getSelectedItems()?.length > 0);
     }
     async onAssignGitRepo(oEvent) {
         const oContext = this.getView().getBindingContext();

@@ -9,17 +9,50 @@
 
     <ObjectPageLayout id="ObjectPageLayout"
         class="sapUiNoContentPadding"
-        showTitleInHeaderContent="false"
+        showTitleInHeaderContent="true"
         upperCaseAnchorBar="false">
         <headerTitle>
-            <ObjectPageHeader objectTitle="{bspName}"
-                objectSubtitle="{description}"
-                isObjectTitleAlwaysVisible="true"
-                isObjectSubtitleAlwaysVisible="true">
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:FlexBox wrap="Wrap"
+                        fitContainer="true"
+                        alignItems="Center">
+                        <m:Title text="{bspName}"
+                            wrapping="true"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+                    </m:FlexBox>
+                </expandedHeading>
+
+                <snappedHeading>
+                    <m:FlexBox wrap="Wrap"
+                        fitContainer="true"
+                        alignItems="Center">
+                        <m:FlexBox wrap="NoWrap"
+                            fitContainer="true"
+                            alignItems="Center"
+                            class="sapUiTinyMarginEnd">
+                            <m:Title text="{bspName}"
+                                wrapping="true"
+                                class="sapUiTinyMarginEnd"/>
+                        </m:FlexBox>
+                    </m:FlexBox>
+                </snappedHeading>
+
+                <expandedContent>
+                    <m:Text text="{description}"/>
+                </expandedContent>
+
+                <snappedContent>
+                    <m:Text text="{description}"/>
+                </snappedContent>
+
                 <actions>
                     <m:OverflowToolbarButton icon="sap-icon://fontawesome/git"
                         tooltip="{i18n>gitRepositoryAssignAction}"
                         press="onAssignGitRepo"/>
+                </actions>
+
+                <navigationActions>
                     <m:OverflowToolbarButton type="Transparent"
                         icon="sap-icon://full-screen"
                         press="handleFullScreen"
@@ -35,8 +68,9 @@
                         press="handleClose"
                         tooltip="Close column"
                         visible="{= ${layout>/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
-                </actions>
-            </ObjectPageHeader>
+                </navigationActions>
+
+            </ObjectPageDynamicHeaderTitle>
         </headerTitle>
 
         <headerContent>
@@ -65,7 +99,7 @@
         <sections>
             <ObjectPageSection titleUppercase="false"
                 id="messagesSection"
-                title="Messages"
+                title="{i18n>messagesTableTitle}"
                 importance="Medium">
 
                 <subSections>
@@ -74,12 +108,22 @@
                         <m:Table id="checkResults"
                             inset="false"
                             mode="MultiSelect"
+                            selectionChange="onMessageTableSelectionChange"
                             items="{ 
                                         path: 'i18nResults',
                                         sorter: {
                                             path: 'file/path'
                                         }
                                     }">
+                            <m:headerToolbar>
+                                <m:OverflowToolbar>
+                                    <m:ToolbarSpacer />
+                                    <m:ToggleButton icon="sap-icon://show"
+                                        tooltip="{i18n>showIgnoredButton}"/>
+                                    <m:Button text="{i18n>ignoreButton}"
+                                        enabled="{viewModel>/ignoreActionEnabled}"/>
+                                </m:OverflowToolbar>
+                            </m:headerToolbar>
                             <m:columns>
                                 <m:Column width="30em">
                                     <m:Text text="{i18n>filePathCol}" />
