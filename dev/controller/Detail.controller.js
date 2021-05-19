@@ -53,6 +53,9 @@ export default class DetailController extends BaseController {
             return;
         }
         const sGitUrl = oDialogModel.getProperty("/url");
+        if (sGitUrl === oCurrentBsp.gitUrl) {
+            return;
+        }
 
         try {
             const oRepoInfoService = new RepositoryInfoService();
