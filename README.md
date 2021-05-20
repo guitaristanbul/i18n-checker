@@ -1,3 +1,4 @@
+![](https://img.shields.io/badge/SAPUI5-v1.71.28+-green)
 # i18n-checker
 Perform checks for i18n-files in UI5 repositories (i.e. BSP applications)
 
@@ -8,6 +9,10 @@ The data retrieval is done via a simple REST web service which can be installed 
 > **Note:** This repository also includes the deployed version of this app.
 
 ![image](img/app-design.png)
+
+## App requirements
+- Modern browser - Internet Explorer is not supported
+- Minimum SAPUI5 framework version is 1.71.28
 
 ## Setup
 1) Install all node dependencies
