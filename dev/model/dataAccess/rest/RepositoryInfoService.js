@@ -23,9 +23,7 @@ export default class RepositoryInfoService {
         return ajax.send(SERVICE_URL, {
             method: "POST",
             dataType: "",
-            headers: {
-                [ajax.CSRF_TOKEN_HEADER]: sToken
-            },
+            CSRFToken: sToken,
             data: JSON.stringify({ bspName, gitUrl })
         });
     }

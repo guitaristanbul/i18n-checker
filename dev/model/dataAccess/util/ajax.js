@@ -15,13 +15,23 @@ export default {
      * @param {string} parameters.username username for basic authentication
      * @param {string} parameters.password password for basic authentication
      * @param {string} parameters.method request method (e.g. GET/POST/PUT)
+     * @param {string} parameters.CSRFToken CSRF token for POST/PUT/DELETE
      * @returns {Promise<Object>} promise to ajax request
      * @public
      */
     send(
         sUrl,
-        { headers = {}, method = "GET", data = undefined, dataType = "json", username = "", password = "" } = {}
+        {
+            headers = {},
+            method = "GET",
+            data = undefined,
+            dataType = "json",
+            CSRFToken = "",
+            username = "",
+            password = ""
+        } = {}
     ) {
+        this._addCSRFToRequestData(headers, CSRFToken);
         return new Promise((fnResolve, fnReject) => {
             $.ajax({
                 url: sUrl,
@@ -48,11 +58,13 @@ export default {
      * @param {String} parameters.url URL string for request
      * @param {Array|Object} parameters.data Optional payload for the request,
      * @param {String} parameters.dataType The expected result type of the response
-     * @param {Map} parameters.headers Optional map with request headers (key/value pairs)
+     * @param {Object} parameters.headers Optional map with request headers (key/value pairs)
+     * @param {string} parameters.CSRFToken CSRF token for POST/PUT/DELETE
      * @returns {Object} the result of synchronous request
      */
-    sendSync(sUrl, { method = "GET", data, dataType = "json", headers = {} } = {}) {
+    sendSync(sUrl, { method = "GET", data, dataType = "json", headers = {}, CSRFToken = "" } = {}) {
         let oResponse;
+        this._addCSRFToRequestData(headers, CSRFToken);
         $.ajax({
             method,
             url: sUrl,
@@ -92,5 +104,10 @@ export default {
         });
         this._sCSRFToken = oResult?.request?.getResponseHeader(this.CSRF_TOKEN_HEADER);
         return this._sCSRFToken;
+    },
+    _addCSRFToRequestData(oHeaders, sCSRFToken) {
+        if (!oHeaders[this.CSRF_TOKEN_HEADER] && sCSRFToken) {
+            oHeaders[this.CSRF_TOKEN_HEADER] = sCSRFToken;
+        }
     }
 };

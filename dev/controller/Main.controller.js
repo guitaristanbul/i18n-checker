@@ -24,6 +24,7 @@ export default class MainController extends BaseController {
         this._oModel = this.getOwnerComponent().getModel();
         this._oViewModel = models.createViewModel({
             compareAgainstDefault: true,
+            showIgnoredEntries: false,
             defaultLanguage: "en",
             selectedFilter: "Error",
             resultsTableTitle: this._oBundle.getText("resultsTableTitle", [0])
@@ -91,9 +92,10 @@ export default class MainController extends BaseController {
         // check if the results model is filled, if so nothing has to be done
         this._oViewModel.setProperty("/busy", true);
 
+        const oModelData = this._oViewModel.getData();
         const mParams = {
-            defaultLanguage: this._oViewModel.getProperty("/defaultLanguage"),
-            compareAgainstDefaultFile: this._oViewModel.getProperty("/compareAgainstDefault"),
+            defaultLanguage: oModelData.defaultLanguage,
+            compareAgainstDefaultFile: oModelData.compareAgainstDefault,
             targetLanguages: this._oTargetLanguagesInput
                 .getTokens()
                 .map(oToken => oToken.getKey())
@@ -101,7 +103,8 @@ export default class MainController extends BaseController {
             bspNames: this._oBspNameFilterInput
                 .getTokens()
                 .map(oToken => encodeURIComponent(oToken.getKey()))
-                .join(",")
+                .join(","),
+            showIgnoredEntries: oModelData.showIgnoredEntries
         };
 
         let aCheckResults = [];

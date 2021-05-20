@@ -105,12 +105,13 @@
                 <subSections>
                     <ObjectPageSubSection id="checkResultSubSection"
                         titleUppercase="false">
-                        <m:Table id="checkResults"
+                        <m:Table id="i18nMessages"
                             inset="false"
                             sticky="ColumnHeaders,HeaderToolbar"
                             mode="MultiSelect"
+                            busy="{viewModel>/busy}"
                             growing="true"
-                            growingScrollToLoad="true"
+                            growingThreshold="20"
                             selectionChange="onMessageTableSelectionChange"
                             items="{ 
                                         path: 'i18nResults',
@@ -128,13 +129,15 @@
                                                         formatter: '.formatMessage'
                                                     }"/>
                                     <m:ToolbarSpacer />
-                                    <m:ToggleButton icon="sap-icon://show"
-                                        tooltip="{i18n>showIgnoredButton}"/>
                                     <m:Button text="{i18n>ignoreButton}"
+                                        press="onIgnoreFiles"
                                         enabled="{viewModel>/ignoreActionEnabled}"/>
                                 </m:OverflowToolbar>
                             </m:headerToolbar>
                             <m:columns>
+                                <m:Column width="5em">
+                                    <m:Text text="{i18n>statusCol}"/>
+                                </m:Column>
                                 <m:Column>
                                     <m:Text text="{i18n>filePathCol}" />
                                 </m:Column>
@@ -152,6 +155,9 @@
                             <m:items>
                                 <m:ColumnListItem type="Active">
                                     <m:cells>
+                                        <core:Icon src="sap-icon://hide"
+                                            visible="{= !!${ignEntryUuid}}"
+                                            tooltip="{i18n>ignoredStatus}"/>
                                         <m:ObjectIdentifier title="{file/path}"/>
                                         <m:Text text="{file/name}" />
                                         <m:Text text="{

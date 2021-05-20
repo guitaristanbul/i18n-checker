@@ -84,6 +84,19 @@
 										showValueHelp="false"/>
 								</fb:control>
 							</fb:FilterGroupItem>
+							<fb:FilterGroupItem name="showIgnoredFilter"
+								groupName="_BASIC"
+								visibleInFilterBar="true"
+								label="{i18n>showIgnoredFilter}">
+								<fb:control>
+									<Select selectedKey="{viewModel>/showIgnoredEntries}">
+										<core:Item key="true"
+											text="{i18n>yes}" />
+										<core:Item key="false"
+											text="{i18n>no}" />
+									</Select>
+								</fb:control>
+							</fb:FilterGroupItem>
 						</fb:filterGroupItems>
 					</fb:FilterBar>
 				</f:content>
