@@ -37,9 +37,23 @@ export default class CheckI18nService {
      * @param {Object} oIgnorePayload files to be ignored
      * @returns {Promise<JSON>} a promise of the response result
      */
-    async ignoreResults(oIgnorePayload) {
+    async ignoreMessages(oIgnorePayload) {
         const sToken = await ajax.fetchCSRF();
-        return ajax.send(`${constants.SRV_ROOT}/ignoreKeys`, {
+        return ajax.send(`${constants.SRV_ROOT}/ignoredMessages`, {
+            data: JSON.stringify(oIgnorePayload),
+            method: "POST",
+            CSRFToken: sToken
+        });
+    }
+    /**
+     * Deletes i18n messages that were previously ignored
+     * @param {Object} oIgnorePayload files to be ignored
+     * @param {boolean} bDelete if <code>true</code> the deletion mode should be used
+     * @returns {Promise<JSON>} a promise of the response result
+     */
+    async deleteIgnoredMessages(oIgnorePayload, bDelete) {
+        const sToken = await ajax.fetchCSRF();
+        return ajax.send(`${constants.SRV_ROOT}/ignoredMessages?delete=true`, {
             data: JSON.stringify(oIgnorePayload),
             method: "POST",
             CSRFToken: sToken

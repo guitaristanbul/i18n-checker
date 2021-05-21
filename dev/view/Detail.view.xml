@@ -133,9 +133,7 @@
                                         tooltip="{i18n>excludeButtonTooltip}"
                                         press="onExcludeMessages"
                                         enabled="{viewModel>/excludeActionEnabled}"/>
-                                    <!-- The include feature is not yet implemented so it will be hidden for now-->
                                     <m:Button text="{i18n>includeButton}"
-                                        visible="false"
                                         tooltip="{i18n>includeButtonTooltip}"
                                         press="onIncludeMessages"
                                         enabled="{viewModel>/includeActionEnabled}"/>

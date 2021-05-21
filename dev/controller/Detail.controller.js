@@ -56,14 +56,13 @@ export default class DetailController extends BaseController {
         if (!oCurrentBsp) {
             return;
         }
-        const oDialogContent = await Fragment.load({ type: "XML", name: "devepos.i18ncheck.fragment.ChangeGitRepo" });
         const oDialogModel = models.createViewModel({ url: oCurrentBsp.gitUrl });
         // show dialog
         const oDialog = new AsyncDialog({
             title: this._oBundle.getText("gitRepositoryAssignDialogTitle"),
             width: "45em",
             height: "8em",
-            content: oDialogContent,
+            content: await Fragment.load({ type: "XML", name: "devepos.i18ncheck.fragment.ChangeGitRepo" }),
             model: oDialogModel
         });
         const sResult = await oDialog.showDialog(this.getView());
@@ -88,53 +87,37 @@ export default class DetailController extends BaseController {
         }
     }
     /**
-     * Event handler for "Exclude" action in i18n message toolbar
+     * Event handler for "Exclude" action in i18n messages table toolbar
      */
     async onExcludeMessages() {
-        const aSelectedContexts = this._oTable.getSelectedContexts();
-        if (aSelectedContexts?.length <= 0) {
-            return;
-        }
-        const oSelectedBsp = this.getView().getBindingContext()?.getObject();
-        if (!oSelectedBsp) {
-            return;
-        }
-
-        this._oViewModel.setProperty("/busy", true);
-
-        const aEntriesToBeIgnored = [];
-        for (const oKey of aSelectedContexts) {
-            const oContextObj = oKey.getObject();
-            if (!oContextObj || oContextObj?.ignored) {
-                continue;
-            }
-            aEntriesToBeIgnored.push({
-                bspName: oSelectedBsp.bspName,
-                messageType: oContextObj.messageType,
-                filePath: oContextObj.file.path,
-                fileName: oContextObj.file.name,
-                i18nKey: oContextObj.key
-            });
-        }
-        if (aEntriesToBeIgnored.length > 0) {
-            try {
-                const oResponse = await new CheckI18nService().ignoreResults(aEntriesToBeIgnored);
-                if (oResponse?.data?.length > 0) {
-                    this._updateTableWithIgnoredEntries(oResponse.data, aSelectedContexts);
-                    this.getOwnerComponent().getModel().updateBindings();
-                    this._oTable.removeSelections();
-                }
-            } catch (oError) {
-                if (oError?.statusText) {
-                    Log.error(oError.statusText);
-                } else {
-                    Log.error(oError);
-                }
-            }
-        }
-        this._oViewModel.setProperty("/busy", false);
+        this._createIgnoreMessageEntries(
+            oObj => !oObj.ignEntryUuid,
+            oObj => {
+                return {
+                    messageType: oObj.messageType,
+                    filePath: oObj.file.path,
+                    fileName: oObj.file.name,
+                    i18nKey: oObj.key
+                };
+            },
+            this._updateIgnoreEntries.bind(this)
+        );
     }
-    onIncludeMessages(oEvent) {}
+    /**
+     * Event handler for "Include" action in i18n messages table toolbar
+     */
+    async onIncludeMessages() {
+        this._createIgnoreMessageEntries(
+            oObj => !!oObj.ignEntryUuid,
+            oObj => {
+                return {
+                    ignEntryUuid: oObj.ignEntryUuid
+                };
+            },
+            this._clearIgnoredKeyFromEntries.bind(this),
+            true
+        );
+    }
     handleItemPress(oEvent) {
         // var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
         //     supplierPath = oEvent.getSource().getBindingContext("products").getPath(),
@@ -163,14 +146,75 @@ export default class DetailController extends BaseController {
             path: sResultPath
         });
     }
-    _updateTableWithIgnoredEntries(aIgnoredEntries, aSelectedContexts) {
-        if (aIgnoredEntries?.length <= 0) {
+    /**
+     * Creates/Deletes ignore entries for selected i18n messages
+     * @param {Function} fnFilterSelection function for filtering selected messages
+     * @param {Function} fnGetObject function for retrieving the object for the request
+     * @param {Function} fnResponsePostProcess function for post processing after successful service call
+     * @param {boolean} bDelete flag to indicate that ignore entries should be deleted
+     */
+    async _createIgnoreMessageEntries(fnFilterSelection, fnGetObject, fnResponsePostProcess, bDelete) {
+        const aSelectedContexts = this._oTable.getSelectedContexts();
+        if (aSelectedContexts?.length <= 0) {
             return;
         }
-        for (const oSelectedContext of aSelectedContexts) {
+        const oSelectedBsp = this.getView().getBindingContext()?.getObject();
+        if (!oSelectedBsp) {
+            return;
+        }
+
+        this._oViewModel.setProperty("/busy", true);
+
+        const aIncludeExclude = [];
+        const aRelevantSelections = [];
+        for (const oContext of aSelectedContexts) {
+            const oContextObj = oContext.getObject();
+            if (!fnFilterSelection(oContextObj)) {
+                continue;
+            }
+            aRelevantSelections.push(oContext);
+            aIncludeExclude.push(Object.assign({ bspName: oSelectedBsp.bspName }, fnGetObject(oContextObj)));
+        }
+        if (aIncludeExclude.length > 0) {
+            try {
+                const oCheckService = new CheckI18nService();
+                const oResponse = bDelete
+                    ? await oCheckService.deleteIgnoredMessages(aIncludeExclude)
+                    : await oCheckService.ignoreMessages(aIncludeExclude);
+                if (oResponse?.data?.length > 0) {
+                    fnResponsePostProcess(oResponse.data, aRelevantSelections);
+                    this.getOwnerComponent().getModel().updateBindings();
+                    this._oTable.removeSelections();
+                    const sTextKey = bDelete ? "messagesIncludedSuccess" : "messagesExcludedSuccess";
+                    MessageToast.show(this._oBundle.getText(sTextKey, oResponse?.data?.length));
+                }
+            } catch (oError) {
+                if (oError?.statusText) {
+                    Log.error(oError.statusText);
+                } else {
+                    Log.error(oError);
+                }
+            }
+        }
+        this._oViewModel.setProperty("/busy", false);
+    }
+    _clearIgnoredKeyFromEntries(aResponseEntries, aContexts) {
+        if (aResponseEntries?.length !== aContexts?.length) {
+            return;
+        }
+        for (const oContext of aContexts) {
+            const oContextObj = oContext.getObject();
+            oContextObj.ignEntryUuid = "";
+        }
+    }
+    _updateIgnoreEntries(aExcludedEntries, aContexts) {
+        if (aExcludedEntries?.length !== aContexts?.length) {
+            return;
+        }
+        for (const oSelectedContext of aContexts) {
             const oSelectedObject = oSelectedContext.getObject();
             // find the selected entry in the response
-            const oIgnoredEntry = aIgnoredEntries.find(
+            const oIgnoredEntry = aExcludedEntries.find(
                 oEntry =>
                     oEntry.fileName === oSelectedObject.file.name &&
                     oEntry.filePath === oSelectedObject.file.path &&
