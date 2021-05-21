@@ -1,6 +1,6 @@
 {
   "name": "i18n-checker",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "App for checking UI5 Repositories for missing/incomplete i18n texts",
   "private": true,
   "scripts": {
@@ -31,7 +31,6 @@
     "@openui5/ts-types": "^1.60.5",
     "babel": "^6.23.0",
     "babel-preset-transform-ui5": "^7.0.3",
-    "copyfiles": "^2.4.1",
     "dotenv": "^9.0.2",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
