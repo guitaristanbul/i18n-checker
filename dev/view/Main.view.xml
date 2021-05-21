@@ -87,9 +87,9 @@
 							<fb:FilterGroupItem name="showIgnoredFilter"
 								groupName="_BASIC"
 								visibleInFilterBar="true"
-								label="{i18n>showIgnoredFilter}">
+								label="{i18n>showExcludedFilter}">
 								<fb:control>
-									<Select selectedKey="{viewModel>/showIgnoredEntries}">
+									<Select selectedKey="{viewModel>/showExcludedEntries}">
 										<core:Item key="true"
 											text="{i18n>yes}" />
 										<core:Item key="false"

@@ -24,7 +24,7 @@ export default class MainController extends BaseController {
         this._oModel = this.getOwnerComponent().getModel();
         this._oViewModel = models.createViewModel({
             compareAgainstDefault: true,
-            showIgnoredEntries: false,
+            showExcludedEntries: false,
             defaultLanguage: "en",
             selectedFilter: "Error",
             resultsTableTitle: this._oBundle.getText("resultsTableTitle", [0])
@@ -104,7 +104,7 @@ export default class MainController extends BaseController {
                 .getTokens()
                 .map(oToken => encodeURIComponent(oToken.getKey()))
                 .join(","),
-            showIgnoredEntries: oModelData.showIgnoredEntries
+            showExcludedEntries: oModelData.showExcludedEntries
         };
 
         let aCheckResults = [];

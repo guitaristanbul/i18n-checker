@@ -129,9 +129,16 @@
                                                         formatter: '.formatMessage'
                                                     }"/>
                                     <m:ToolbarSpacer />
-                                    <m:Button text="{i18n>ignoreButton}"
-                                        press="onIgnoreFiles"
-                                        enabled="{viewModel>/ignoreActionEnabled}"/>
+                                    <m:Button text="{i18n>excludeButton}"
+                                        tooltip="{i18n>excludeButtonTooltip}"
+                                        press="onExcludeMessages"
+                                        enabled="{viewModel>/excludeActionEnabled}"/>
+                                    <!-- The include feature is not yet implemented so it will be hidden for now-->
+                                    <m:Button text="{i18n>includeButton}"
+                                        visible="false"
+                                        tooltip="{i18n>includeButtonTooltip}"
+                                        press="onIncludeMessages"
+                                        enabled="{viewModel>/includeActionEnabled}"/>
                                 </m:OverflowToolbar>
                             </m:headerToolbar>
                             <m:columns>
@@ -156,8 +163,7 @@
                                 <m:ColumnListItem type="Active">
                                     <m:cells>
                                         <core:Icon src="sap-icon://hide"
-                                            visible="{= !!${ignEntryUuid}}"
-                                            tooltip="{i18n>ignoredStatus}"/>
+                                            visible="{= !!${ignEntryUuid}}" />
                                         <m:ObjectIdentifier title="{file/path}"/>
                                         <m:Text text="{file/name}" />
                                         <m:Text text="{

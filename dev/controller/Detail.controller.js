@@ -22,17 +22,29 @@ export default class DetailController extends BaseController {
     onInit() {
         this._oLayoutModel = this.getOwnerComponent().getLayoutModel();
         this._oBundle = this.getOwnerComponent().getResourceBundle();
-        this._oViewModel = models.createViewModel({ ignoreActionEnabled: false, busy: false });
-        this._oViewModel.attachPropertyChange(this._onModelUpdated.bind(this));
+        this._oViewModel = models.createViewModel({
+            excludeActionEnabled: false,
+            includeActionEnabled: false,
+            busy: false
+        });
         this._oTable = this.byId("i18nMessages");
         this.getView().setModel(this._oViewModel, "viewModel");
         const oRouter = this.getRouter();
         oRouter.getRoute("main").attachPatternMatched(this._onRouteMatched, this);
         oRouter.getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
     }
-    onMessageTableSelectionChange(oEvent) {
-        const oTable = oEvent.getSource();
-        this._oViewModel.setProperty("/ignoreActionEnabled", oTable.getSelectedItems()?.length > 0);
+    onMessageTableSelectionChange() {
+        let bEnableExcludeAction = false;
+        let bEnableIncludeAction = false;
+        for (const oSelectedContext of this._oTable.getSelectedContexts()) {
+            if (oSelectedContext.getProperty("ignEntryUuid")) {
+                bEnableIncludeAction = true;
+            } else {
+                bEnableExcludeAction = true;
+            }
+        }
+        this._oViewModel.setProperty("/excludeActionEnabled", bEnableExcludeAction);
+        this._oViewModel.setProperty("/includeActionEnabled", bEnableIncludeAction);
     }
     /**
      * Event handler for assigning a git url to a BSP application
@@ -76,9 +88,9 @@ export default class DetailController extends BaseController {
         }
     }
     /**
-     * Event handler for "Ignore" action in i18n message toolbar
+     * Event handler for "Exclude" action in i18n message toolbar
      */
-    async onIgnoreFiles() {
+    async onExcludeMessages() {
         const aSelectedContexts = this._oTable.getSelectedContexts();
         if (aSelectedContexts?.length <= 0) {
             return;
@@ -122,6 +134,7 @@ export default class DetailController extends BaseController {
         }
         this._oViewModel.setProperty("/busy", false);
     }
+    onIncludeMessages(oEvent) {}
     handleItemPress(oEvent) {
         // var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
         //     supplierPath = oEvent.getSource().getBindingContext("products").getPath(),
@@ -149,15 +162,6 @@ export default class DetailController extends BaseController {
         this.getView().bindElement({
             path: sResultPath
         });
-    }
-    _onModelUpdated(oEvent) {
-        if (oEvent.getParameter("path") === "/showIgnored") {
-            const aFilters = [];
-            if (!oEvent.getParameter("value")) {
-                aFilters.push(this._oHideIgnoredEntriesFilter);
-            }
-            this._oTable.getBinding("items")?.filter(aFilters);
-        }
     }
     _updateTableWithIgnoredEntries(aIgnoredEntries, aSelectedContexts) {
         if (aIgnoredEntries?.length <= 0) {
