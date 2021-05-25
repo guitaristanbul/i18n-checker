@@ -55,7 +55,7 @@ export default class MainController extends BaseController {
 
     onResultsPress(oEvent) {
         const oNextUIState = this.getFlexColHelper().getNextUIState(1);
-        this.getRouter().navTo("detail", {
+        this.oRouter.navTo("detail", {
             layout: oNextUIState.layout,
             resultPath: encodeURIComponent(oEvent.getSource().getBindingContextPath())
         });

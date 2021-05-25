@@ -55,17 +55,17 @@
                 <navigationActions>
                     <m:OverflowToolbarButton type="Transparent"
                         icon="sap-icon://full-screen"
-                        press="handleFullScreen"
+                        press="onFullScreen"
                         tooltip="Enter Full Screen Mode"
                         visible="{= ${layout>/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
                     <m:OverflowToolbarButton type="Transparent"
                         icon="sap-icon://exit-full-screen"
-                        press="handleExitFullScreen"
+                        press="onExitFullScreen"
                         tooltip="Exit Full Screen Mode"
                         visible="{= ${layout>/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
                     <m:OverflowToolbarButton type="Transparent"
                         icon="sap-icon://decline"
-                        press="handleClose"
+                        press="onClose"
                         tooltip="Close column"
                         visible="{= ${layout>/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
                 </navigationActions>
@@ -143,7 +143,8 @@
                                 <m:Column width="5em">
                                     <m:Text text="{i18n>statusCol}"/>
                                 </m:Column>
-                                <m:Column>
+                                <m:Column minScreenWidth="500px"
+                                    demandPopin="true">
                                     <m:Text text="{i18n>filePathCol}" />
                                 </m:Column>
                                 <m:Column width="10em">
@@ -158,7 +159,8 @@
                                 </m:Column>
                             </m:columns>
                             <m:items>
-                                <m:ColumnListItem type="Active">
+                                <m:ColumnListItem type="Active"
+                                    press="onItemPress">
                                     <m:cells>
                                         <core:Icon src="sap-icon://hide"
                                             visible="{= !!${ignEntryUuid}}" />

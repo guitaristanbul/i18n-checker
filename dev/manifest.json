@@ -95,11 +95,6 @@
                     "name": "detail",
                     "pattern": "detail/{resultPath}/{layout}",
                     "target": ["main", "detail"]
-                },
-                {
-                    "name": "detailDetail",
-                    "pattern": "detailDetail/{resultPath}/{detailPath}/{layout}",
-                    "target": ["main", "detail"]
                 }
             ],
             "targets": {

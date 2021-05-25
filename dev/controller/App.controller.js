@@ -8,13 +8,12 @@ import BaseController from "devepos/i18ncheck/controller/BaseController";
  */
 export default class AppController extends BaseController {
     onInit() {
-        this.oRouter = this.getOwnerComponent().getRouter();
+        BaseController.prototype.onInit.call(this);
         this.oRouter.attachRouteMatched(this.onRouteMatched, this);
         this.oRouter.attachBeforeRouteMatched(this.onBeforeRouteMatched, this);
     }
 
     onBeforeRouteMatched(oEvent) {
-        const oModel = this.getOwnerComponent().getLayoutModel();
         let sLayout = oEvent.getParameters().arguments.layout;
 
         // If there is no layout parameter, query for the default level 0 layout (normally OneColumn)
@@ -25,7 +24,7 @@ export default class AppController extends BaseController {
 
         // Update the layout of the FlexibleColumnLayout
         if (sLayout) {
-            oModel.setProperty("/layout", sLayout);
+            this.oLayoutModel.setProperty("/layout", sLayout);
         }
     }
 
@@ -59,9 +58,8 @@ export default class AppController extends BaseController {
 
     // Update the close/fullscreen buttons visibility
     _updateUIElements() {
-        const oModel = this.getOwnerComponent().getLayoutModel();
         const oUIState = this.getOwnerComponent().getHelper().getCurrentUIState();
-        oModel.setData(oUIState);
+        this.oLayoutModel.setData(oUIState);
     }
 
     onExit() {

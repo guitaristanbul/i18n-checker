@@ -8,7 +8,10 @@ import Controller from "sap/ui/core/mvc/Controller";
  * @public
  */
 export default class BaseController extends Controller {
-    onInit() {}
+    onInit() {
+        this.oRouter = this.getOwnerComponent().getRouter();
+        this.oLayoutModel = this.getOwnerComponent().getLayoutModel();
+    }
 
     /**
      * Retrieves the configurated router instance

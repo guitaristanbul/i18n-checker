@@ -20,7 +20,7 @@ export default class DetailController extends BaseController {
     formatter = formatter;
     formatMessage = formatMessage;
     onInit() {
-        this._oLayoutModel = this.getOwnerComponent().getLayoutModel();
+        BaseController.prototype.onInit.call(this);
         this._oBundle = this.getOwnerComponent().getResourceBundle();
         this._oViewModel = models.createViewModel({
             excludeActionEnabled: false,
@@ -29,9 +29,8 @@ export default class DetailController extends BaseController {
         });
         this._oTable = this.byId("i18nMessages");
         this.getView().setModel(this._oViewModel, "viewModel");
-        const oRouter = this.getRouter();
-        oRouter.getRoute("main").attachPatternMatched(this._onRouteMatched, this);
-        oRouter.getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
+        this.oRouter.getRoute("main").attachPatternMatched(this._onRouteMatched, this);
+        this.oRouter.getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
     }
     onMessageTableSelectionChange() {
         let bEnableExcludeAction = false;
@@ -118,22 +117,17 @@ export default class DetailController extends BaseController {
             true
         );
     }
-    handleItemPress(oEvent) {
-        // var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(2),
-        //     supplierPath = oEvent.getSource().getBindingContext("products").getPath(),
-        //     supplier = supplierPath.split("/").slice(-1).pop();
-        // this.getRouter().navTo("detailDetail", { layout: oNextUIState.layout, product: this._product, supplier: supplier });
-    }
-    handleFullScreen() {
-        const sNextLayout = this._oLayoutModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
+    onItemPress(oEvent) {}
+    onFullScreen() {
+        const sNextLayout = this.oLayoutModel.getProperty("/actionButtonsInfo/midColumn/fullScreen");
         this.getRouter().navTo("detail", { layout: sNextLayout, resultPath: encodeURIComponent(this._sResultPath) });
     }
-    handleExitFullScreen() {
-        const sNextLayout = this._oLayoutModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
+    onExitFullScreen() {
+        const sNextLayout = this.oLayoutModel.getProperty("/actionButtonsInfo/midColumn/exitFullScreen");
         this.getRouter().navTo("detail", { layout: sNextLayout, resultPath: encodeURIComponent(this._sResultPath) });
     }
-    handleClose() {
-        var sNextLayout = this._oLayoutModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
+    onClose() {
+        var sNextLayout = this.oLayoutModel.getProperty("/actionButtonsInfo/midColumn/closeColumn");
         this.getRouter().navTo("main", { layout: sNextLayout });
     }
     _onRouteMatched(oEvent) {
