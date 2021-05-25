@@ -21,7 +21,7 @@ builder:
         ui5:
           language: EN
           package: $TMP
-          bspContainer: Z18NCHKAPP
+          bspContainer: ZI18NCHKAPP
           bspContainerText: Logon Information Plugin for FLP
           calculateApplicationIndex: true
 server:
