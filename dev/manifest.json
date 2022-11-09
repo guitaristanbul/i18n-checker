@@ -25,7 +25,7 @@
             "tablet": true,
             "phone": true
         },
-        "supportedThemes": ["sap_hcb", "sap_belize", "sap_fiori3"]
+        "supportedThemes": ["sap_hcb", "sap_belize", "sap_fiori3", "sap_horizon"]
     },
     "sap.ui5": {
         "config": {
